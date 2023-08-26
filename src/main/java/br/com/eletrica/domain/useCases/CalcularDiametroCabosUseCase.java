@@ -1,5 +1,7 @@
 package br.com.eletrica.domain.useCases;
 
+import br.com.eletrica.common.constantes.TIPO_UTILIZACAO;
+import br.com.eletrica.common.exception.ErrosSistema;
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.domain.model.builder.BuscaSecaoMinimaBuilder;
 import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
@@ -12,18 +14,28 @@ import br.com.eletrica.domain.services.CalcularPotenciaService;
 //import br.com.eletrica.domain.validacao.Validador;
 import br.com.eletrica.infra.entidade.ConducaoCabos;
 import br.com.eletrica.infra.repositorio.RepositorioNBR;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 
+@Service
 public class CalcularDiametroCabosUseCase {
 
-    public static DadosResposta calcular(DadosEntrada entrada) throws ValidacaoException {
+    public DadosResposta calcular(DadosEntrada entrada) throws ValidacaoException {
 
         var mapper = new DadosCircuitoMapper();
         var repositorio = new RepositorioNBR();
 
         // validacao
 //        Validador.validarRequisicaoCabeacao(entrada);
+        try {
+            TIPO_UTILIZACAO.valueOf(entrada.getUtilizacaoCircuito());
+        } catch (IllegalArgumentException e) {
+            throw new ValidacaoException("Valor nao aceito para utilizacao do circuito. " +
+                    "Utilize um desses: ",
+                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
+        }
 
         var resposta = new DadosResposta();
         resposta.setCircuito(mapper.toDomain(entrada));
