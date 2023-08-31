@@ -29,4 +29,31 @@ public class ConducaoCabos {
                 "ORDER BY sessao_nominal ASC " +
                 "LIMIT 1";
     }
+
+    public static String getNomeTabela() {
+        return "conducao_cabos";
+    }
+    public static String getNomeColunaInstalacao() {
+        return "instalacao";
+    }
+
+    public static String getNomeColunaCondutoresCarregados() {
+        return "condutores_carregados";
+    }
+
+    public static String getNomeColunaMaterial() {
+        return "material";
+    }
+
+    public static String getNomeColunaCorrenteNominal() {
+        return "corrente_nominal";
+    }
+
+    public static String getNomeColunaIsolacao() {
+        return "isolacao";
+    }
+
+    public static String getNomeColunaSecaoNominal() {
+        return "sessao_nominal";
+    }
 }

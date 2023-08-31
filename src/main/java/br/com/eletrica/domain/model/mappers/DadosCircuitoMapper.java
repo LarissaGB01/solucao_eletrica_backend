@@ -4,8 +4,6 @@ import br.com.eletrica.common.constantes.*;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
 import br.com.eletrica.domain.model.api.resposta.DadosCircuito;
 
-import java.math.BigDecimal;
-
 public class DadosCircuitoMapper {
     public DadosCircuito toDomain(DadosEntrada entrada) {
         var dadosCircuito = new DadosCircuito();

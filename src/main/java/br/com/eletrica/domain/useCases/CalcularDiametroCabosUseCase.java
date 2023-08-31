@@ -1,78 +1,65 @@
 package br.com.eletrica.domain.useCases;
 
-import br.com.eletrica.common.constantes.TIPO_UTILIZACAO;
 import br.com.eletrica.common.exception.ErrosSistema;
 import br.com.eletrica.common.exception.ValidacaoException;
-import br.com.eletrica.domain.model.builder.BuscaSecaoMinimaBuilder;
-import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
-import br.com.eletrica.domain.model.mappers.DadosCircuitoMapper;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
 import br.com.eletrica.domain.model.api.resposta.DadosResposta;
+import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
+import br.com.eletrica.domain.model.mappers.DadosCircuitoMapper;
 import br.com.eletrica.domain.services.CalcularCorrenteService;
 import br.com.eletrica.domain.services.CalcularDiametroCaboService;
 import br.com.eletrica.domain.services.CalcularPotenciaService;
-//import br.com.eletrica.domain.validacao.Validador;
-import br.com.eletrica.infra.entidade.ConducaoCabos;
+import br.com.eletrica.domain.validacao.Validador;
 import br.com.eletrica.infra.repositorio.RepositorioNBR;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-
 @Service
+@RequiredArgsConstructor
 public class CalcularDiametroCabosUseCase {
+
+    private final DadosCircuitoMapper mapper;
+    private final RepositorioNBR repositorioNBR;
+    private final CalcularCorrenteService calcularCorrenteService;
 
     public DadosResposta calcular(DadosEntrada entrada) throws ValidacaoException {
 
-        var mapper = new DadosCircuitoMapper();
-        var repositorio = new RepositorioNBR();
-
-        // validacao
-//        Validador.validarRequisicaoCabeacao(entrada);
-        try {
-            TIPO_UTILIZACAO.valueOf(entrada.getUtilizacaoCircuito());
-        } catch (IllegalArgumentException e) {
-            throw new ValidacaoException("Valor nao aceito para utilizacao do circuito. " +
-                    "Utilize um desses: ",
-                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
-        }
+        // Validação
+        Validador.validarRequisicaoCabeacao(entrada);
 
         var resposta = new DadosResposta();
         resposta.setCircuito(mapper.toDomain(entrada));
 
-        // calcular potencias
+        // Calcular potências
         var potenciaAparente = CalcularPotenciaService.calcularAparente(
                 entrada.getPotenciaAtiva(),
                 entrada.getPotenciaAparente(),
                 entrada.getFatorDePotencia());
         resposta.getCircuito().setPotenciaAparente(potenciaAparente);
 
-        // calcular corrente de projeto
-        var correnteProjeto = CalcularCorrenteService.calcularCorrenteProjeto(resposta.getCircuito());
+        // Calcular corrente de projeto
+        var correnteProjeto = calcularCorrenteService.calcularCorrenteProjeto(resposta.getCircuito());
         resposta.getCircuito().setCorrenteProjeto(correnteProjeto);
 
-        // definir resistividade do cabo
+        // Definir resistividade do cabo
         var resistividade = resposta.getCircuito().getTipoCabo().valorResistividade();
 
-        // calcular secao do condutor
+        // Calcular seção do condutor
         var diametroCalculado = CalcularDiametroCaboService.calcular(resistividade, resposta.getCircuito());
 
-        // verificar finalidade do circuito para valor minimo
-        var sessaoMinima = resposta.getCircuito().getUtilizacaoCircuito().getMinimoDiametroCabo();
-        if (diametroCalculado.compareTo(sessaoMinima) < 0) {
-            diametroCalculado = sessaoMinima;
+        // Verificar finalidade do circuito para valor mínimo
+        var secaoMinima = resposta.getCircuito().getUtilizacaoCircuito().getMinimoDiametroCabo();
+        if (diametroCalculado.compareTo(secaoMinima) < 0) {
+            diametroCalculado = secaoMinima;
         }
 
-        // buscar secao do condutor
-        var dadosBuscaSecaoMinima = new BuscaSecaoMinimaBuilder()
-                .setDadosCircuito(resposta.getCircuito())
-                .setSecaoCalculada(diametroCalculado)
-                .build();
-        var dadosConducaoCalculados = new DadosConducaoCabos();
-        try {
-            dadosConducaoCalculados = repositorio.buscarSecaoMinimaCabo(dadosBuscaSecaoMinima);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        // Buscar seção do condutor
+        var dadosParaBuscaSecaoMinima = new DadosConducaoCabos(resposta.getCircuito(), diametroCalculado);
+        var dadosConducaoCalculados = repositorioNBR.buscarSecaoMinimaCabo(dadosParaBuscaSecaoMinima);
+
+        if (dadosConducaoCalculados == null) {
+            throw new ValidacaoException("Tente informar outros dados para o sistema.",
+                    ErrosSistema.REGISTRO_DIAMETRO_NAO_ENCONTRADO);
         }
 
         resposta.getCabeamento().setDiametroCabo(dadosConducaoCalculados.getSecaoNominal());

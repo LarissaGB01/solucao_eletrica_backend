@@ -1,30 +1,40 @@
 package br.com.eletrica.common.util;
 
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+@Component
 public class ConnectionUtil {
 
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/normativas";
-    private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "livro";
+    @Value("${spring.datasource.url}")
+    private String url;
 
-    public static Connection getConnection() {
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.password}")
+    private String password;
+
+    public Connection getConnection() {
         try {
-            return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            return DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            throw new RuntimeException("Error while connecting to the database", e);
+            throw new ValidacaoException("Erro SQL " + e.getErrorCode(), ErrosSistema.ACESSO_BANCO_DADOS);
         }
     }
 
-    public static void closeConnection(Connection connection) throws SQLException {
+    public void closeConnection(Connection connection) {
         if (connection != null) {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
+                throw new ValidacaoException("Erro SQL " + e.getErrorCode(), ErrosSistema.ACESSO_BANCO_DADOS);
             }
         }
     }

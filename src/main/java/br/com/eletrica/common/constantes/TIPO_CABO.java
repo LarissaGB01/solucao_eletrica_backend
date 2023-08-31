@@ -3,21 +3,26 @@ package br.com.eletrica.common.constantes;
 import java.math.BigDecimal;
 
 public enum TIPO_CABO {
-    PVC("PVC", BigDecimal.valueOf(0.0172)),
-    EPR("EPR", BigDecimal.valueOf(0.0172)),
-    ALUMINIO("ALUMINIO", BigDecimal.valueOf(0.02857)),
-    COBRE("COBRE", BigDecimal.valueOf(0.0172));
+    PVC("COBRE", "PVC", BigDecimal.valueOf(0.0172)),
+    EPR("COBRE", "EPR", BigDecimal.valueOf(0.0172)),
+    ALUMINIO("ALUMINIO", "PVC", BigDecimal.valueOf(0.02857));
 
-    private final String descricao;
+    private final String material;
     private final BigDecimal resistividade;
+    private final String isolamento;
 
-    private TIPO_CABO(String descricao, BigDecimal resistividade) {
-        this.descricao = descricao;
+    TIPO_CABO(String material, String isolamento, BigDecimal resistividade) {
+        this.material = material;
         this.resistividade = resistividade;
+        this.isolamento = isolamento;
     }
 
-    public String get() {
-        return descricao;
+    public String getIsolamento() {
+        return isolamento;
+    }
+
+    public String getMaterial() {
+        return material;
     }
 
     public BigDecimal valorResistividade() {

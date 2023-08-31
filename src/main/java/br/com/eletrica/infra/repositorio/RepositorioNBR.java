@@ -1,24 +1,35 @@
 package br.com.eletrica.infra.repositorio;
 
+import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.domain.interfaces.IRepositorio;
 import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
 import br.com.eletrica.domain.model.infra.DadosFatorTemperatura;
 import br.com.eletrica.infra.dao.ConducaoCabosDao;
 import br.com.eletrica.infra.dao.FatorTemperaturaDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
+@Repository
 public class RepositorioNBR implements IRepositorio {
-    @Override
-    public BigDecimal buscarFatorTemperatura(DadosFatorTemperatura dadosFatorTemperatura) throws SQLException {
-        var dao = new FatorTemperaturaDao();
-        return dao.buscarFatorCorrecaoTemperatura(dadosFatorTemperatura);
+
+    private final FatorTemperaturaDao fatorTemperaturaDao;
+    private final ConducaoCabosDao conducaoCabosDao;
+
+    @Autowired
+    public RepositorioNBR(FatorTemperaturaDao fatorTemperaturaDao, ConducaoCabosDao conducaoCabosDao) {
+        this.fatorTemperaturaDao = fatorTemperaturaDao;
+        this.conducaoCabosDao = conducaoCabosDao;
     }
 
     @Override
-    public DadosConducaoCabos buscarSecaoMinimaCabo(DadosConducaoCabos dadosConducaoCabos) throws SQLException {
-        var dao = new ConducaoCabosDao();
-        return dao.buscarSecaoMinimaCabo(dadosConducaoCabos);
+    public BigDecimal buscarFatorTemperatura(DadosFatorTemperatura dadosFatorTemperatura) throws ValidacaoException {
+        return fatorTemperaturaDao.buscarFatorCorrecaoTemperatura(dadosFatorTemperatura);
+    }
+
+    @Override
+    public DadosConducaoCabos buscarSecaoMinimaCabo(DadosConducaoCabos dadosConducaoCabos) throws ValidacaoException {
+        return conducaoCabosDao.buscarSecaoMinimaCabo(dadosConducaoCabos);
     }
 }

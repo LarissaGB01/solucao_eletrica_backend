@@ -1,22 +1,38 @@
 package br.com.eletrica.infra.dao;
 
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.common.util.ConnectionUtil;
 import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
 import br.com.eletrica.infra.entidade.ConducaoCabos;
 import br.com.eletrica.infra.mapper.ConducaoCabosMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+@Component
 public class ConducaoCabosDao {
 
-    public DadosConducaoCabos buscarSecaoMinimaCabo(DadosConducaoCabos dados) throws SQLException {
+    private final ConnectionUtil connectionUtil;
+    private final ConducaoCabosMapper mapper;
+
+    @Autowired
+    public ConducaoCabosDao(ConnectionUtil connectionUtil, ConducaoCabosMapper mapper) {
+        this.connectionUtil = connectionUtil;
+        this.mapper = mapper;
+    }
+
+    public DadosConducaoCabos buscarSecaoMinimaCabo(DadosConducaoCabos dados) throws ValidacaoException {
         Connection connection = null;
         PreparedStatement statement;
         ResultSet resultSet;
-        var mapper = new ConducaoCabosMapper();
 
         try {
-            connection = ConnectionUtil.getConnection();
+            connection = connectionUtil.getConnection();
 
             // Alimenta parametros de consulta
             statement = connection.prepareStatement(ConducaoCabos.queryConsultar());
@@ -33,21 +49,21 @@ public class ConducaoCabosDao {
             // Processa o resultado
             if (resultSet.next()) {
                 ConducaoCabos conducaoCabos = new ConducaoCabos();
-                conducaoCabos.setMaterial(resultSet.getString("material"));
-                conducaoCabos.setSecaoNominal(resultSet.getBigDecimal("sessao_nominal"));
-                conducaoCabos.setInstalacao(resultSet.getString("instalacao"));
-                conducaoCabos.setCondutoresCarregados(resultSet.getInt("condutores_carregados"));
-                conducaoCabos.setCorrenteNominal(resultSet.getBigDecimal("corrente_nominal"));
-                conducaoCabos.setIsolamento(resultSet.getString("isolacao"));
+                conducaoCabos.setMaterial(resultSet.getString(ConducaoCabos.getNomeColunaMaterial()));
+                conducaoCabos.setSecaoNominal(resultSet.getBigDecimal(ConducaoCabos.getNomeColunaSecaoNominal()));
+                conducaoCabos.setInstalacao(resultSet.getString(ConducaoCabos.getNomeColunaInstalacao()));
+                conducaoCabos.setCondutoresCarregados(resultSet.getInt(ConducaoCabos.getNomeColunaCondutoresCarregados()));
+                conducaoCabos.setCorrenteNominal(resultSet.getBigDecimal(ConducaoCabos.getNomeColunaCorrenteNominal()));
+                conducaoCabos.setIsolamento(resultSet.getString(ConducaoCabos.getNomeColunaIsolacao()));
                 return mapper.toDomain(conducaoCabos);
             } else {
                 return null;
             }
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            return null;
+        } catch (SQLException e) {
+            throw new ValidacaoException("Erro ao acessar a tabela " + ConducaoCabos.getNomeTabela() + "." +
+                    "Codigo SQL " + e.getErrorCode(), ErrosSistema.ACESSO_BANCO_DADOS);
         } finally {
-            ConnectionUtil.closeConnection(connection);
+            connectionUtil.closeConnection(connection);
         }
     }
 }

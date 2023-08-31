@@ -1,71 +1,54 @@
-//package br.com.eletrica.domain.validacao;
-//
-//import br.com.eletrica.common.constantes.*;
-//import br.com.eletrica.common.exception.ErrosSistema;
-//import br.com.eletrica.common.exception.ValidacaoException;
-//import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
-//
-//public class ValidarConstantes implements Validador {
-//
-//    @Override
-//    public void validar(DadosEntrada entrada) throws ValidacaoException {
-//
-//        // valida utilizacao do circuito
-//        try {
-//            TIPO_UTILIZACAO.valueOf(entrada.getUtilizacaoCircuito());
-//        } catch (IllegalArgumentException e) {
-//            throw new ValidacaoException("Valor nao aceito para utilizacao do circuito. " +
-//                    "Utilize um desses: " + listarEnums(TIPO_UTILIZACAO.class) + ".",
-//                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
-//        }
-//
-//        // valida fases voltagem
-//        try {
-//            FASES_VOLTAGEM.valueOf(entrada.getFasesVoltagem());
-//        } catch (IllegalArgumentException e) {
-//            throw new ValidacaoException("Valor nao aceito para fases da voltagem. " +
-//                    "Utilize um desses: " + listarEnums(FASES_VOLTAGEM.class) + ".",
-//                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
-//        }
-//
-//        // valida metodo de instalacao
-//        try {
-//            METODO_INSTALACAO.valueOf(entrada.getMetodoInstalacao());
-//        } catch (IllegalArgumentException e) {
-//            throw new ValidacaoException("Valor nao aceito para metodo de instalacao. " +
-//                    "Utilize um desses: " + listarEnums(METODO_INSTALACAO.class) + ".",
-//                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
-//        }
-//
-//        // valida tipo do cabo
-//        try {
-//            TIPO_CABO.valueOf(entrada.getTipoCabo());
-//        } catch (IllegalArgumentException e) {
-//            throw new ValidacaoException("Valor nao aceito para o tipo do cabo. " +
-//                    "Utilize um desses: " + listarEnums(TIPO_CABO.class) + ".",
-//                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
-//        }
-//
-//        // valida tipo de circuito
-//        try {
-//            TIPO_CIRCUITO.valueOf(entrada.getTipoCircuito());
-//        } catch (IllegalArgumentException e) {
-//            throw new ValidacaoException("Valor nao aceito para o tipo de circuito. " +
-//                    "Utilize um desses: " + listarEnums(TIPO_CIRCUITO.class) + ".",
-//                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
-//        }
-//    }
-//
-//
-//    public static <E extends Enum<E>> String listarEnums(Class<E> enumClass) {
-//        var sb = new StringBuilder();
-//
-//        for (E enumValue : enumClass.getEnumConstants()) {
-//            sb.append(enumValue.toString());
-//            sb.append(", ");
-//        }
-//
-//        var resposta = sb.toString();
-//        return resposta.substring(0, resposta.length() - 2);
-//    }
-//}
+package br.com.eletrica.domain.validacao;
+
+import br.com.eletrica.common.constantes.*;
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
+import br.com.eletrica.common.util.FieldUtil;
+import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
+
+public class ValidarConstantes implements Validador {
+
+    @Override
+    public void validar(DadosEntrada entrada) throws ValidacaoException {
+
+        // valida utilizacao do circuito
+        if (entrada.getUtilizacaoCircuito() == null ||
+                FieldUtil.enumContem(TIPO_UTILIZACAO.class, entrada.getUtilizacaoCircuito())) {
+            throw new ValidacaoException("Utilizacao do circuito informada: " + entrada.getUtilizacaoCircuito() + ". " +
+                    "Valores aceitos: " + FieldUtil.listarEnums(TIPO_UTILIZACAO.class) + ".",
+                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
+        }
+
+        // valida fases voltagem
+        if (entrada.getFasesVoltagem() == null ||
+                FieldUtil.enumContem(FASES_VOLTAGEM.class, entrada.getFasesVoltagem())) {
+            throw new ValidacaoException("Fases de voltagem informada: " + entrada.getFasesVoltagem() + ". " +
+                    "Valores aceitos: " + FieldUtil.listarEnums(FASES_VOLTAGEM.class) + ".",
+                    ErrosSistema.FASES_SISTEMA_INVALIDA);
+        }
+
+        // valida metodo de instalacao
+        if (entrada.getMetodoInstalacao() == null ||
+                FieldUtil.enumContem(METODO_INSTALACAO.class, entrada.getMetodoInstalacao())) {
+            throw new ValidacaoException("Metodo de instalacao informado: " + entrada.getMetodoInstalacao() + ". " +
+                    "Valores aceitos: " + FieldUtil.listarEnums(METODO_INSTALACAO.class) + ".",
+                    ErrosSistema.TIPO_DE_INSTALACAO_INVALIDA);
+        }
+
+        // valida tipo do cabo
+        if (entrada.getTipoCabo() == null ||
+                FieldUtil.enumContem(TIPO_CABO.class, entrada.getTipoCabo())) {
+            throw new ValidacaoException("Tipo de cabo informado: " + entrada.getTipoCabo() + ". " +
+                    "Valores aceitos: " + FieldUtil.listarEnums(TIPO_CABO.class) + ".",
+                    ErrosSistema.MATERIAL_DO_CABO_INVALIDO);
+        }
+
+        // valida tipo de circuito
+        if (entrada.getTipoCircuito() == null ||
+                FieldUtil.enumContem(TIPO_CIRCUITO.class, entrada.getTipoCircuito())) {
+            throw new ValidacaoException("Tipo de circuito informado: " + entrada.getTipoCircuito() + ". " +
+                    "Valores aceitos: " + FieldUtil.listarEnums(TIPO_CIRCUITO.class) + ".",
+                    ErrosSistema.TIPO_CIRCUITO_INVALIDO);
+        }
+    }
+}

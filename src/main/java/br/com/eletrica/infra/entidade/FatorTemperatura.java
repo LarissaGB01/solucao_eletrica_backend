@@ -22,4 +22,20 @@ public class FatorTemperatura {
                 "ORDER BY temperatura ASC " +
                 "LIMIT 1";
     }
+
+    public static String getNomeTabela() {
+        return "fator_temperatura";
+    }
+
+    public static String getNomeColunaTemperatura() {
+        return "temperatura";
+    }
+
+    public static String getNomeColunaIsolacao() {
+        return "isolacao";
+    }
+
+    public static String getNomeColunaFatorCorrecao() {
+        return "fator_correcao";
+    }
 }
