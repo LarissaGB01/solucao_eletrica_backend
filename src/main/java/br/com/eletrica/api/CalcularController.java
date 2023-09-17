@@ -18,19 +18,26 @@ import java.util.logging.Logger;
 @RestController
 public class CalcularController {
 
-    private final CalcularDiametroCabosUseCase useCase;
+    private final CalcularDiametroCabosUseCase useCaseCondutores;
 
     private static final Logger logger = Logger.getLogger(CalcularController.class.getName());
 
-    public CalcularController(CalcularDiametroCabosUseCase useCase) {
-        this.useCase = useCase;
+    public CalcularController(CalcularDiametroCabosUseCase useCaseCondutores) {
+        this.useCaseCondutores = useCaseCondutores;
     }
 
     @PostMapping("/dimensionar")
     DadosResposta dimensionar(@RequestBody DadosEntrada requisicao) {
         logger.info("NOVA REQUISICAO POST/dimensionar-----------------------------");
         logger.info(requisicao.toString());
-        return useCase.calcular(requisicao);
+        return useCaseCondutores.calcular(requisicao);
+    }
+
+    @PostMapping("/dimensionar/condutores")
+    DadosResposta dimensionarCondutores(@RequestBody DadosEntrada requisicao) {
+        logger.info("NOVA REQUISICAO POST/dimensionar/condutores------------------");
+        logger.info(requisicao.toString());
+        return useCaseCondutores.calcular(requisicao);
     }
 
     @ExceptionHandler(ValidacaoException.class)

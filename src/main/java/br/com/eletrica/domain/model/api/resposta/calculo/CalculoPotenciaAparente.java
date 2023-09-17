@@ -1,0 +1,15 @@
+package br.com.eletrica.domain.model.api.resposta.calculo;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+public class CalculoPotenciaAparente {
+    private BigDecimal potenciaAparente = BigDecimal.ZERO;
+    private BigDecimal fatorDePotencia = BigDecimal.ZERO;
+    private BigDecimal potenciaAtiva = BigDecimal.ZERO;
+    private Boolean indicadorPotenciaAparenteInformada;
+}

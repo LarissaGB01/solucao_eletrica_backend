@@ -1,4 +1,4 @@
-package br.com.eletrica.domain.model.api.resposta;
+package br.com.eletrica.domain.model;
 
 import br.com.eletrica.common.constantes.*;
 import lombok.Getter;

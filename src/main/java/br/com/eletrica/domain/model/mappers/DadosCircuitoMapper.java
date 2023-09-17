@@ -2,7 +2,7 @@ package br.com.eletrica.domain.model.mappers;
 
 import br.com.eletrica.common.constantes.*;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
-import br.com.eletrica.domain.model.api.resposta.DadosCircuito;
+import br.com.eletrica.domain.model.DadosCircuito;
 
 public class DadosCircuitoMapper {
     public DadosCircuito toDomain(DadosEntrada entrada) {

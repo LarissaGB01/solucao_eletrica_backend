@@ -5,6 +5,7 @@ import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
 import br.com.eletrica.domain.model.api.resposta.DadosResposta;
 import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
+import br.com.eletrica.domain.model.infra.DadosExemploCondutor;
 import br.com.eletrica.domain.model.mappers.DadosCircuitoMapper;
 import br.com.eletrica.domain.services.CalcularCorrenteService;
 import br.com.eletrica.domain.services.CalcularDiametroCaboService;
@@ -28,33 +29,36 @@ public class CalcularDiametroCabosUseCase {
         Validador.validarRequisicaoCabeacao(entrada);
 
         var resposta = new DadosResposta();
-        resposta.setCircuito(mapper.toDomain(entrada));
+        var circuito = mapper.toDomain(entrada);
 
         // Calcular potências
-        var potenciaAparente = CalcularPotenciaService.calcularAparente(
+        var dadosCalculoPotenciaAparente = CalcularPotenciaService.calcularAparente(
                 entrada.getPotenciaAtiva(),
                 entrada.getPotenciaAparente(),
                 entrada.getFatorDePotencia());
-        resposta.getCircuito().setPotenciaAparente(potenciaAparente);
+
+        resposta.getCalculoSecaoCondutor().setCalculoPotenciaAparente(dadosCalculoPotenciaAparente);
+        circuito.setPotenciaAparente(dadosCalculoPotenciaAparente.getPotenciaAparente());
 
         // Calcular corrente de projeto
-        var correnteProjeto = calcularCorrenteService.calcularCorrenteProjeto(resposta.getCircuito());
-        resposta.getCircuito().setCorrenteProjeto(correnteProjeto);
+        var dadosCalculoCorrenteProjeto = calcularCorrenteService.calcularCorrenteProjeto(circuito);
+
+        resposta.getCalculoSecaoCondutor().setCalculoCorrenteProjeto(dadosCalculoCorrenteProjeto);
+        circuito.setCorrenteProjeto(dadosCalculoCorrenteProjeto.getCorrenteProjeto());
 
         // Definir resistividade do cabo
-        var resistividade = resposta.getCircuito().getTipoCabo().valorResistividade();
+        var resistividade = circuito.getTipoCabo().valorResistividade();
 
         // Calcular seção do condutor
-        var diametroCalculado = CalcularDiametroCaboService.calcular(resistividade, resposta.getCircuito());
+        var calculoDiametro = CalcularDiametroCaboService.calcular(resistividade, circuito);
 
-        // Verificar finalidade do circuito para valor mínimo
-        var secaoMinima = resposta.getCircuito().getUtilizacaoCircuito().getMinimoDiametroCabo();
-        if (diametroCalculado.compareTo(secaoMinima) < 0) {
-            diametroCalculado = secaoMinima;
-        }
+        resposta.getCalculoSecaoCondutor().setCalculoDiametroMinimoCabo(calculoDiametro);
 
         // Buscar seção do condutor
-        var dadosParaBuscaSecaoMinima = new DadosConducaoCabos(resposta.getCircuito(), diametroCalculado);
+        var diametroCabo = calculoDiametro.getIndicadorMinimoDiametroUtilizado() ?
+                calculoDiametro.getMinimoDiametroCabo() :
+                calculoDiametro.getDiametroCalculado();
+        var dadosParaBuscaSecaoMinima = new DadosConducaoCabos(circuito, diametroCabo);
         var dadosConducaoCalculados = repositorioNBR.buscarSecaoMinimaCabo(dadosParaBuscaSecaoMinima);
 
         if (dadosConducaoCalculados == null) {
@@ -62,8 +66,17 @@ public class CalcularDiametroCabosUseCase {
                     ErrosSistema.REGISTRO_DIAMETRO_NAO_ENCONTRADO);
         }
 
-        resposta.getCabeamento().setDiametroCabo(dadosConducaoCalculados.getSecaoNominal());
-        resposta.getCabeamento().setCorrenteCabo(dadosConducaoCalculados.getCorrenteNominal());
+        resposta.getCabeamento().setSecaoNominalCondutor(dadosConducaoCalculados.getSecaoNominal());
+        resposta.getCabeamento().setCorrenteMaximaCondutor(dadosConducaoCalculados.getCorrenteNominal());
+
+        // Buscar condutor recomendado
+        var dadosParaBuscaCondutor = new DadosExemploCondutor(circuito, dadosConducaoCalculados.getSecaoNominal());
+        var condutorRecomendado = repositorioNBR.buscarExemploCabeamento(dadosParaBuscaCondutor);
+
+        if (condutorRecomendado != null) {
+            resposta.getCabeamento().setDiametroNominalCaboRecomendado(condutorRecomendado.getDiametroNominalCondutor());
+            resposta.getCabeamento().setDiametroExternoCaboRecomendado(condutorRecomendado.getDiametroNominalExterno());
+        }
 
         return resposta;
     }
