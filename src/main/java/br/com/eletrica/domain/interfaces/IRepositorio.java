@@ -1,14 +1,13 @@
 package br.com.eletrica.domain.interfaces;
 
 import br.com.eletrica.common.exception.ValidacaoException;
-import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
-import br.com.eletrica.domain.model.infra.DadosExemploCondutor;
-import br.com.eletrica.domain.model.infra.DadosFatorTemperatura;
+import br.com.eletrica.domain.model.infra.*;
 
 import java.math.BigDecimal;
 
 public interface IRepositorio {
-    BigDecimal buscarFatorTemperatura(DadosFatorTemperatura dadosFatorTemperatura) throws ValidacaoException;
+    BigDecimal buscarFatorTemperatura(DadosBuscaFatorTemperatura dadosFatorTemperatura) throws ValidacaoException;
     DadosConducaoCabos buscarSecaoMinimaCabo(DadosConducaoCabos dadosConducaoCabos) throws ValidacaoException;
-    DadosExemploCondutor buscarExemploCabeamento(DadosExemploCondutor dadosExemploCondutor) throws ValidacaoException;
+    DadosExemploCondutor buscarExemploCabeamento(DadosBuscaExemploCondutor dadosExemploCondutor) throws ValidacaoException;
+    DadosExemploDisjuntor buscarExemploDisjuntor(DadosBuscaExemploDisjuntor dadosExemploDisjuntor) throws ValidacaoException;
 }

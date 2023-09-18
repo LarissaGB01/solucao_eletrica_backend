@@ -9,9 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DadosResposta {
-    private DadosCabeamento cabeamento = new DadosCabeamento();
+public class DadosRespostaDisjuntores {
     private DadosDisjuntor disjuntor = new DadosDisjuntor();
-    private CalculoSecaoCondutor calculoSecaoCondutor = new CalculoSecaoCondutor();
     private CalculoDisjuntor calculoDisjuntor = new CalculoDisjuntor();
 }

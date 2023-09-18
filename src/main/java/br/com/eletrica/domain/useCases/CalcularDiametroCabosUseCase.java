@@ -4,6 +4,7 @@ import br.com.eletrica.common.exception.ErrosSistema;
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
 import br.com.eletrica.domain.model.api.resposta.DadosResposta;
+import br.com.eletrica.domain.model.infra.DadosBuscaExemploCondutor;
 import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
 import br.com.eletrica.domain.model.infra.DadosExemploCondutor;
 import br.com.eletrica.domain.model.mappers.DadosCircuitoMapper;
@@ -70,7 +71,7 @@ public class CalcularDiametroCabosUseCase {
         resposta.getCabeamento().setCorrenteMaximaCondutor(dadosConducaoCalculados.getCorrenteNominal());
 
         // Buscar condutor recomendado
-        var dadosParaBuscaCondutor = new DadosExemploCondutor(circuito, dadosConducaoCalculados.getSecaoNominal());
+        var dadosParaBuscaCondutor = new DadosBuscaExemploCondutor(circuito, dadosConducaoCalculados.getSecaoNominal());
         var condutorRecomendado = repositorioNBR.buscarExemploCabeamento(dadosParaBuscaCondutor);
 
         if (condutorRecomendado != null) {

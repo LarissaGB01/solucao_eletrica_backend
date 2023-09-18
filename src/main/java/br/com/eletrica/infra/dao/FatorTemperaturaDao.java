@@ -3,7 +3,7 @@ package br.com.eletrica.infra.dao;
 import br.com.eletrica.common.exception.ErrosSistema;
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.common.util.ConnectionUtil;
-import br.com.eletrica.domain.model.infra.DadosFatorTemperatura;
+import br.com.eletrica.domain.model.infra.DadosBuscaFatorTemperatura;
 import br.com.eletrica.infra.entidade.FatorTemperatura;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class FatorTemperaturaDao {
         this.connectionUtil = connectionUtil;
     }
 
-    public BigDecimal buscarFatorCorrecaoTemperatura(DadosFatorTemperatura dados) throws ValidacaoException {
+    public BigDecimal buscarFatorCorrecaoTemperatura(DadosBuscaFatorTemperatura dados) throws ValidacaoException {
         Connection connection = null;
         PreparedStatement statement;
         ResultSet resultSet;

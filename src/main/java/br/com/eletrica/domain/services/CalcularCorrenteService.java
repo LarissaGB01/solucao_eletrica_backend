@@ -5,7 +5,7 @@ import br.com.eletrica.common.exception.ErrosSistema;
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.domain.model.api.resposta.calculo.CalculoCorrenteProjeto;
 import br.com.eletrica.domain.model.DadosCircuito;
-import br.com.eletrica.domain.model.infra.DadosFatorTemperatura;
+import br.com.eletrica.domain.model.infra.DadosBuscaFatorTemperatura;
 import br.com.eletrica.infra.repositorio.RepositorioNBR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,7 @@ public class CalcularCorrenteService {
         dadosDeCalculo.setFatorAgrupamento(fatorAgrupamento);
 
         // Buscar fator de temperatura
-        var fatorTemperatura = repositorioNBR.buscarFatorTemperatura(new DadosFatorTemperatura(circuito));
+        var fatorTemperatura = repositorioNBR.buscarFatorTemperatura(new DadosBuscaFatorTemperatura(circuito));
         if (fatorTemperatura == null) {
             throw new ValidacaoException("Tente informar outros dados para o tipo do cabo e temperatura ambiente.",
                     ErrosSistema.REGISTRO_TEMPERATURA_NAO_ENCONTRADO);

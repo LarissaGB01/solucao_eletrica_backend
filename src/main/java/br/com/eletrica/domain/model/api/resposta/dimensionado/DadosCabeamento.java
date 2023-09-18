@@ -1,4 +1,4 @@
-package br.com.eletrica.domain.model.api.resposta;
+package br.com.eletrica.domain.model.api.resposta.dimensionado;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -3,8 +3,12 @@ package br.com.eletrica.api;
 import br.com.eletrica.common.exception.ErroResponse;
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
+import br.com.eletrica.domain.model.api.requisicao.DadosEntradaDisjuntores;
 import br.com.eletrica.domain.model.api.resposta.DadosResposta;
+import br.com.eletrica.domain.model.api.resposta.DadosRespostaCondutores;
+import br.com.eletrica.domain.model.api.resposta.DadosRespostaDisjuntores;
 import br.com.eletrica.domain.useCases.CalcularDiametroCabosUseCase;
+import br.com.eletrica.domain.useCases.CalcularDisjuntoresUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
@@ -19,25 +23,57 @@ import java.util.logging.Logger;
 public class CalcularController {
 
     private final CalcularDiametroCabosUseCase useCaseCondutores;
+    private final CalcularDisjuntoresUseCase useCaseDisjuntores;
 
     private static final Logger logger = Logger.getLogger(CalcularController.class.getName());
 
-    public CalcularController(CalcularDiametroCabosUseCase useCaseCondutores) {
+    public CalcularController(CalcularDiametroCabosUseCase useCaseCondutores, CalcularDisjuntoresUseCase useCaseDisjuntores) {
         this.useCaseCondutores = useCaseCondutores;
+        this.useCaseDisjuntores = useCaseDisjuntores;
     }
 
     @PostMapping("/dimensionar")
     DadosResposta dimensionar(@RequestBody DadosEntrada requisicao) {
         logger.info("NOVA REQUISICAO POST/dimensionar-----------------------------");
         logger.info(requisicao.toString());
-        return useCaseCondutores.calcular(requisicao);
+
+        var resposta = new DadosResposta();
+
+        // dimensionamento condutores
+        resposta.setCabeamento(useCaseCondutores.calcular(requisicao).getCabeamento());
+        resposta.setCalculoSecaoCondutor(useCaseCondutores.calcular(requisicao).getCalculoSecaoCondutor());
+
+        // dimensionamento disjuntores
+        resposta.setDisjuntor(useCaseDisjuntores.calcularComCondutores(requisicao).getDisjuntor());
+        resposta.setCalculoDisjuntor(useCaseDisjuntores.calcularComCondutores(requisicao).getCalculoDisjuntor());
+
+        // dimensionamento eletrodutos
+
+        return resposta;
     }
 
     @PostMapping("/dimensionar/condutores")
-    DadosResposta dimensionarCondutores(@RequestBody DadosEntrada requisicao) {
+    DadosRespostaCondutores dimensionarCondutores(@RequestBody DadosEntrada requisicao) {
         logger.info("NOVA REQUISICAO POST/dimensionar/condutores------------------");
         logger.info(requisicao.toString());
-        return useCaseCondutores.calcular(requisicao);
+
+        var resposta = new DadosRespostaCondutores();
+        resposta.setCabeamento(useCaseCondutores.calcular(requisicao).getCabeamento());
+        resposta.setCalculoSecaoCondutor(useCaseCondutores.calcular(requisicao).getCalculoSecaoCondutor());
+
+        return resposta;
+    }
+
+    @PostMapping("/dimensionar/disjuntores")
+    DadosRespostaDisjuntores dimensionarDisjuntores(@RequestBody DadosEntradaDisjuntores requisicao) {
+        logger.info("NOVA REQUISICAO POST/dimensionar/disjuntores-----------------");
+        logger.info(requisicao.toString());
+
+        var resposta = new DadosRespostaDisjuntores();
+        resposta.setDisjuntor(useCaseDisjuntores.calcularSemCondutores(requisicao).getDisjuntor());
+        resposta.setCalculoDisjuntor(useCaseDisjuntores.calcularSemCondutores(requisicao).getCalculoDisjuntor());
+
+        return resposta;
     }
 
     @ExceptionHandler(ValidacaoException.class)

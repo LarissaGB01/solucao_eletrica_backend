@@ -1,11 +1,12 @@
-package br.com.eletrica.domain.validacao;
+package br.com.eletrica.domain.validacao.geral;
 
 import br.com.eletrica.common.exception.ErrosSistema;
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.common.util.FieldUtil;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
+import br.com.eletrica.domain.validacao.Validador;
 
-public class ValidarRegrasDeCalculo implements Validador {
+public class ValidarRegrasDeCalculoGeral implements Validador {
 
     @Override
     public void validar(DadosEntrada entrada) {

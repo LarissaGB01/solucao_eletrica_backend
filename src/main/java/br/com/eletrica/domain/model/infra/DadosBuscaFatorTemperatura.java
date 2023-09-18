@@ -8,12 +8,11 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class DadosFatorTemperatura {
+public class DadosBuscaFatorTemperatura {
     private BigDecimal temperatura;
     private String isolacao;
-    private BigDecimal fatorCorrecao;
 
-    public DadosFatorTemperatura(DadosCircuito dadosCircuito) {
+    public DadosBuscaFatorTemperatura(DadosCircuito dadosCircuito) {
         this.temperatura = BigDecimal.valueOf(dadosCircuito.getTemperaturaAmbiente());
         this.isolacao = dadosCircuito.getTipoCabo().getIsolamento();
     }

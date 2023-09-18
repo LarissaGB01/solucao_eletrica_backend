@@ -15,6 +15,9 @@ public enum ErrosSistema {
     POTENCIA_APARENTE_INVALIDA(203, "Potência aparente no sistema deve ser maior ou igual a zero.", HttpStatus.BAD_REQUEST),
     FATOR_DE_POTENCIA_INVALIDO(204, "Fator de potência do sistema deve estar entre zero e um.", HttpStatus.BAD_REQUEST),
     TEMPERATURA_AMBIENTE_INVALIDA(205, "Temperatura ambiente deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
+    CORRENTE_PROJETO_INVALIDA(206, "Corrente do projeto deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
+    CORRENTE_MAXIMA_CABO_INVALIDA(207, "Corrente maxima do cabo deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
+
     QUANTIDADE_CIRCUITOS_AGRUPAGOS_INVALIDA(206, "Quantidade de circuitos agrupados deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
 
     TENSAO_DIFERENTE_FASES_SISTEMA(300, "Tensão escolhida não é aceita para o sistema informado.", HttpStatus.UNPROCESSABLE_ENTITY),
@@ -22,6 +25,7 @@ public enum ErrosSistema {
     POTENCIAS_APARENTE_E_FATOR_POTENCIA_PREENCHIDOS(302, "Caso preencha o valor da potência APARENTE, não é necessário informar o fator de potência.", HttpStatus.UNPROCESSABLE_ENTITY),
     POTENCIA_ATIVA_PREENCHIDA_E_FATOR_POTENCIA_NAO(303, "Caso preencha o valor da potência ativa, é necessário informar o fator de potência.", HttpStatus.UNPROCESSABLE_ENTITY),
     NENHUMA_POTENCIA_PREENCHIDA(304, "Forneça ao menos um valor para a potência do sistema (ativa ou aparente).", HttpStatus.UNPROCESSABLE_ENTITY),
+    CORRENTES_INFORMADAS_INVALIDAS(305, "A corrente maxima suportada pelo cabo deve ser superior a corrente que circula no seu projeto.", HttpStatus.UNPROCESSABLE_ENTITY),
 
     ACESSO_BANCO_DADOS(400, "Erro ao acessar banco de dados.", HttpStatus.INTERNAL_SERVER_ERROR),
     REGISTRO_DIAMETRO_NAO_ENCONTRADO(401, "Diametro nao encontrado para os parametros informados.", HttpStatus.INTERNAL_SERVER_ERROR),

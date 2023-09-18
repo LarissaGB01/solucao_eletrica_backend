@@ -3,6 +3,7 @@ package br.com.eletrica.infra.dao;
 import br.com.eletrica.common.exception.ErrosSistema;
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.common.util.ConnectionUtil;
+import br.com.eletrica.domain.model.infra.DadosBuscaExemploCondutor;
 import br.com.eletrica.domain.model.infra.DadosExemploCondutor;
 import br.com.eletrica.infra.entidade.ExemplosCabos;
 import br.com.eletrica.infra.mapper.ExemplosCabosMapper;
@@ -26,7 +27,7 @@ public class ExemplosCabosDao {
         this.mapper = mapper;
     }
 
-    public DadosExemploCondutor buscarExemploCabeamento(DadosExemploCondutor dados) throws ValidacaoException {
+    public DadosExemploCondutor buscarExemploCabeamento(DadosBuscaExemploCondutor dados) throws ValidacaoException {
         Connection connection = null;
         PreparedStatement statement;
         ResultSet resultSet;
