@@ -22,6 +22,11 @@ public class CalcularDiametroCaboService {
         calculoDiametroMinimoCabo.setVoltagem(circuito.getVoltagem());
         calculoDiametroMinimoCabo.setUtilizacaoCircuito(circuito.getUtilizacaoCircuito().get());
         calculoDiametroMinimoCabo.setMinimoDiametroCabo(circuito.getUtilizacaoCircuito().getMinimoDiametroCabo());
+        calculoDiametroMinimoCabo.setMetodoInstalacao(circuito.getMetodoInstalacao().get());
+        calculoDiametroMinimoCabo.setFasesVoltagem(circuito.getFasesVoltagem().get());
+        calculoDiametroMinimoCabo.setCabosCarregados(circuito.getFasesVoltagem().getCabosCarregados());
+        calculoDiametroMinimoCabo.setMaterialCabo(circuito.getTipoCabo().getMaterial());
+        calculoDiametroMinimoCabo.setIsolamentoCabo(circuito.getTipoCabo().getIsolamento());
 
         var fatorCorrecaoTrifasico = BigDecimal.valueOf(200);
         if (circuito.getFasesVoltagem().equals(FASES_VOLTAGEM.TRIFASICO)) {

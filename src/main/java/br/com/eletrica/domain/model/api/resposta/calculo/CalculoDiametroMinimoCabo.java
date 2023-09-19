@@ -8,16 +8,21 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class CalculoDiametroMinimoCabo {
-    private Boolean indicadorCircuitoTrifasico;
-    private Boolean indicadorMinimoDiametroUtilizado;
     private String tipoCabo;
-    private String utilizacaoCircuito;
+    private BigDecimal resistividadeCabo = BigDecimal.ZERO;
     private String tipoCircuito;
+    private Boolean indicadorCircuitoTrifasico;
     private Integer comprimentoFio;
+    private BigDecimal correnteProjeto = BigDecimal.ZERO;
     private Integer valorVariacaoTensao;
     private Integer voltagem;
-    private BigDecimal resistividadeCabo = BigDecimal.ZERO;
-    private BigDecimal correnteProjeto = BigDecimal.ZERO;
-    private BigDecimal minimoDiametroCabo = BigDecimal.ZERO;
     private BigDecimal diametroCalculado = BigDecimal.ZERO;
+    private String utilizacaoCircuito;
+    private BigDecimal minimoDiametroCabo = BigDecimal.ZERO;
+    private Boolean indicadorMinimoDiametroUtilizado;
+    private String fasesVoltagem;
+    private Integer cabosCarregados;
+    private String metodoInstalacao;
+    private String materialCabo;
+    private String isolamentoCabo;
 }

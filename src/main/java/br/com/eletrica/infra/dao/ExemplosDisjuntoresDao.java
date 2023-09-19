@@ -42,7 +42,6 @@ public class ExemplosDisjuntoresDao {
             statement.setInt(3, dados.getCondutoresCarregados());
 
             // Executa a consulta
-            System.out.println(statement.toString());
             resultSet = statement.executeQuery();
 
             // Processa o resultado

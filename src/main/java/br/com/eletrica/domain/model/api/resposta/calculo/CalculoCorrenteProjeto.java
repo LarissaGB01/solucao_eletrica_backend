@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 @Setter
 public class CalculoCorrenteProjeto {
     private boolean indicadorCircuitoTrifasico;
-    private BigDecimal correnteCircuito = BigDecimal.ZERO;
-    private BigDecimal correnteProjeto = BigDecimal.ZERO;
     private BigDecimal potenciaAparente = BigDecimal.ZERO;
     private Integer voltagem;
+    private BigDecimal correnteCircuito = BigDecimal.ZERO;
     private Integer quantidadeCircuitosAgrupados;
+    private Double fatorAgrupamento;
     private Integer temperaturaAmbiente;
     private String isolacaoCabo;
-    private Double fatorAgrupamento;
     private BigDecimal fatorTemperatura = BigDecimal.ZERO;
+    private BigDecimal correnteProjeto = BigDecimal.ZERO;
 }

@@ -1,15 +1,11 @@
 package br.com.eletrica.domain.useCases;
 
 import br.com.eletrica.common.constantes.FASES_VOLTAGEM;
-import br.com.eletrica.common.exception.ErrosSistema;
 import br.com.eletrica.common.exception.ValidacaoException;
-import br.com.eletrica.common.util.FieldUtil;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntradaDisjuntores;
 import br.com.eletrica.domain.model.api.resposta.DadosResposta;
 import br.com.eletrica.domain.model.infra.DadosBuscaExemploDisjuntor;
-import br.com.eletrica.domain.model.infra.DadosExemploDisjuntor;
-import br.com.eletrica.domain.validacao.Validador;
 import br.com.eletrica.domain.validacao.ValidadorDisjuntores;
 import br.com.eletrica.infra.repositorio.RepositorioNBR;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +23,16 @@ public class CalcularDisjuntoresUseCase {
         var resposta = new DadosResposta();
 
         // Validação
-        ValidadorDisjuntores.validarRequisicaoDisjuntores(entrada);
+        ValidadorDisjuntores.validarRequisicao(entrada);
 
         var fasesVoltagem = FASES_VOLTAGEM.valueOf(entrada.getFasesVoltagem());
         var correnteProjeto = entrada.getCorrenteProjeto();
         var correnteMaximaCabo = entrada.getCorrenteMaximaCabo();
 
-        resposta.getCalculoDisjuntor().setCorrenteProjeto(correnteProjeto);
-        resposta.getCalculoDisjuntor().setCorrenteMaximaCabo(correnteMaximaCabo);
+        resposta.getDadosUtilizadosParaCalculo().getCalculoDisjuntor().setCorrenteProjeto(correnteProjeto);
+        resposta.getDadosUtilizadosParaCalculo().getCalculoDisjuntor().setCorrenteMaximaCabo(correnteMaximaCabo);
+        resposta.getDadosUtilizadosParaCalculo().getCalculoDisjuntor().setFasesVoltagem(fasesVoltagem.get());
+        resposta.getDadosUtilizadosParaCalculo().getCalculoDisjuntor().setCabosCarregados(fasesVoltagem.getCabosCarregados());
 
         // Buscar disjuntor recomendado
         var dadosParaBuscaDisjuntor = new DadosBuscaExemploDisjuntor(fasesVoltagem, correnteProjeto, correnteMaximaCabo);
@@ -48,8 +46,8 @@ public class CalcularDisjuntoresUseCase {
             correnteNominal = disjuntorRecomendado.getCorrenteNominal();
         }
 
-        resposta.getDisjuntor().setNomeDisjuntorRecomendado(nomeDisjuntor);
-        resposta.getDisjuntor().setCorrenteNominalDisjuntorRecomendado(correnteNominal);
+        resposta.getDadosDimensionados().getDisjuntor().setNomeDisjuntorRecomendado(nomeDisjuntor);
+        resposta.getDadosDimensionados().getDisjuntor().setCorrenteNominalDisjuntorRecomendado(correnteNominal);
 
         return resposta;
     }
@@ -61,8 +59,8 @@ public class CalcularDisjuntoresUseCase {
 
         // dimensionar disjuntor
         var requisicaoDisjuntores = new DadosEntradaDisjuntores();
-        requisicaoDisjuntores.setCorrenteMaximaCabo(dadosCondutores.getCabeamento().getCorrenteMaximaCondutor());
-        requisicaoDisjuntores.setCorrenteProjeto(dadosCondutores.getCalculoSecaoCondutor().getCalculoCorrenteProjeto().getCorrenteProjeto());
+        requisicaoDisjuntores.setCorrenteMaximaCabo(dadosCondutores.getDadosDimensionados().getCabeamento().getCorrenteMaximaCondutor());
+        requisicaoDisjuntores.setCorrenteProjeto(dadosCondutores.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor().getCalculoCorrenteProjeto().getCorrenteProjeto());
         requisicaoDisjuntores.setFasesVoltagem(entrada.getFasesVoltagem());
 
         return calcularSemCondutores(requisicaoDisjuntores);

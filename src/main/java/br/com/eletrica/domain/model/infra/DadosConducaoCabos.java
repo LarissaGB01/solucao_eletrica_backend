@@ -22,7 +22,7 @@ public class DadosConducaoCabos {
         this.instalacao = dadosCircuito.getMetodoInstalacao().get();
         this.secaoNominal = secaoCalculada;
         this.correnteNominal = dadosCircuito.getCorrenteProjeto();
-        this.condutoresCarregados = dadosCircuito.getQuantidadeCircuitosAgrupados();
+        this.condutoresCarregados = dadosCircuito.getFasesVoltagem().getCabosCarregados();
         this.material = dadosCircuito.getTipoCabo().getMaterial();
         this.isolamento = dadosCircuito.getTipoCabo().getIsolamento();
     }
