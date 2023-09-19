@@ -10,4 +10,5 @@ public interface IRepositorio {
     DadosConducaoCabos buscarSecaoMinimaCabo(DadosConducaoCabos dadosConducaoCabos) throws ValidacaoException;
     DadosExemploCondutor buscarExemploCabeamento(DadosBuscaExemploCondutor dadosExemploCondutor) throws ValidacaoException;
     DadosExemploDisjuntor buscarExemploDisjuntor(DadosBuscaExemploDisjuntor dadosExemploDisjuntor) throws ValidacaoException;
+    DadosExemploEletroduto buscarExemploEletroduto(BigDecimal valorMinimoParaDiametro) throws ValidacaoException;
 }

@@ -17,6 +17,8 @@ public enum ErrosSistema {
     TEMPERATURA_AMBIENTE_INVALIDA(205, "Temperatura ambiente deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
     CORRENTE_PROJETO_INVALIDA(206, "Corrente do projeto deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
     CORRENTE_MAXIMA_CABO_INVALIDA(207, "Corrente maxima do cabo deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
+    QUANTIDADE_CONDUTORES_INVALIDA(208, "Quantidade de condutores no eletroduto deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
+    DIAMETRO_CABO_INVALIDO(209, "Diametro do cabo deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
 
     QUANTIDADE_CIRCUITOS_AGRUPAGOS_INVALIDA(206, "Quantidade de circuitos agrupados deve ser maior do que zero.", HttpStatus.BAD_REQUEST),
 
