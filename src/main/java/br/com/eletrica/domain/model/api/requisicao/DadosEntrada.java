@@ -1,25 +1,53 @@
 package br.com.eletrica.domain.model.api.requisicao;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
+@Entity
 public class DadosEntrada {
 
+    @Id
+    @ApiModelProperty(required = true, example = "TOMADA")
     private String utilizacaoCircuito;
+
+    @ApiModelProperty(required = true, example = "DISTRIBUICAO")
     private String tipoCircuito;
+
+    @ApiModelProperty(required = true, example = "TRIFASICO")
     private String fasesVoltagem;
+
+    @ApiModelProperty(required = true, example = "380")
     private Integer voltagem;
+
+    @ApiModelProperty(required = true, example = "A1")
     private String metodoInstalacao;
+
+    @ApiModelProperty(required = true, example = "ALUMINIO")
     private String tipoCabo;
+
+    @ApiModelProperty(required = false, example = "12000")
     private BigDecimal potenciaAtiva;
+
+    @ApiModelProperty(required = false, example = "0")
     private BigDecimal potenciaAparente;
+
+    @ApiModelProperty(required = false, example = "0.8")
     private BigDecimal fatorDePotencia;
+
+    @ApiModelProperty(required = true, example = "50")
     private Integer temperaturaAmbiente;
+
+    @ApiModelProperty(required = true, example = "2")
     private Integer quantidadeCircuitosAgrupados;
+
+    @ApiModelProperty(required = true, example = "60")
     private Integer comprimentoFio;
 
     @Override

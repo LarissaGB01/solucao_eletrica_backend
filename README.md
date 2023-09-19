@@ -5,6 +5,7 @@ O projeto foi construido utilizando maven e spring-boot, logo para rodar o proje
 ```
 mvn clean spring-boot:run
 ```
+O swagger da aplicacao esta disponivel nesse [link](http://localhost:8080/swagger-ui.html), quando o projeto e rodado localmente
 
 ## Endpoints
 Para a conexao com o endpoint para calculo de dimensionamento dos elementos eletricos, 
