@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Setter
 public class FatorTemperatura {
     private Integer temperatura;
-    private BigDecimal isolacao;
+    private String isolacao;
     private BigDecimal fatorCorrecao;
 
     public static String queryConsultar() {

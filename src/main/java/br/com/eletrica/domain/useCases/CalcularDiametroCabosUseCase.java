@@ -23,6 +23,8 @@ public class CalcularDiametroCabosUseCase {
     private final DadosCircuitoMapper mapper;
     private final RepositorioNBR repositorioNBR;
     private final CalcularCorrenteService calcularCorrenteService;
+    private final CalcularPotenciaService calcularPotenciaService;
+    private final CalcularDiametroCaboService calcularDiametroCaboService;
 
     public DadosResposta calcular(DadosEntrada entrada) throws ValidacaoException {
 
@@ -33,7 +35,7 @@ public class CalcularDiametroCabosUseCase {
         var circuito = mapper.toDomain(entrada);
 
         // Calcular potências
-        var dadosCalculoPotenciaAparente = CalcularPotenciaService.calcularAparente(
+        var dadosCalculoPotenciaAparente = calcularPotenciaService.calcularAparente(
                 entrada.getPotenciaAtiva(),
                 entrada.getPotenciaAparente(),
                 entrada.getFatorDePotencia());
@@ -51,7 +53,7 @@ public class CalcularDiametroCabosUseCase {
         var resistividade = circuito.getTipoCabo().valorResistividade();
 
         // Calcular seção do condutor
-        var calculoDiametro = CalcularDiametroCaboService.calcular(resistividade, circuito);
+        var calculoDiametro = calcularDiametroCaboService.calcular(resistividade, circuito);
 
         resposta.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor().setCalculoDiametroMinimoCabo(calculoDiametro);
 

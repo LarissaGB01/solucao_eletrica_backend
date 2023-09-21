@@ -15,7 +15,7 @@ public class DadosEntradaEletrodutos {
 
     @Id
     @ApiModelProperty(required = true, example = "25.0")
-    private BigDecimal diametroCabo = BigDecimal.ZERO;
+    private BigDecimal secaoNominalCabo = BigDecimal.ZERO;
 
     @ApiModelProperty(required = true, example = "2")
     private Integer quantidadeCondutores;

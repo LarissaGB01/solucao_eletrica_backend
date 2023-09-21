@@ -14,7 +14,7 @@ public class ValidarConstantesGeral implements Validador {
 
         // valida utilizacao do circuito
         if (entrada.getUtilizacaoCircuito() == null ||
-                FieldUtil.enumContem(TIPO_UTILIZACAO.class, entrada.getUtilizacaoCircuito())) {
+                FieldUtil.enumNaoContem(TIPO_UTILIZACAO.class, entrada.getUtilizacaoCircuito())) {
             throw new ValidacaoException("Utilizacao do circuito informada: " + entrada.getUtilizacaoCircuito() + ". " +
                     "Valores aceitos: " + FieldUtil.listarEnums(TIPO_UTILIZACAO.class) + ".",
                     ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
@@ -22,7 +22,7 @@ public class ValidarConstantesGeral implements Validador {
 
         // valida fases voltagem
         if (entrada.getFasesVoltagem() == null ||
-                FieldUtil.enumContem(FASES_VOLTAGEM.class, entrada.getFasesVoltagem())) {
+                FieldUtil.enumNaoContem(FASES_VOLTAGEM.class, entrada.getFasesVoltagem())) {
             throw new ValidacaoException("Fases de voltagem informada: " + entrada.getFasesVoltagem() + ". " +
                     "Valores aceitos: " + FieldUtil.listarEnums(FASES_VOLTAGEM.class) + ".",
                     ErrosSistema.FASES_SISTEMA_INVALIDA);
@@ -30,7 +30,7 @@ public class ValidarConstantesGeral implements Validador {
 
         // valida metodo de instalacao
         if (entrada.getMetodoInstalacao() == null ||
-                FieldUtil.enumContem(METODO_INSTALACAO.class, entrada.getMetodoInstalacao())) {
+                FieldUtil.enumNaoContem(METODO_INSTALACAO.class, entrada.getMetodoInstalacao())) {
             throw new ValidacaoException("Metodo de instalacao informado: " + entrada.getMetodoInstalacao() + ". " +
                     "Valores aceitos: " + FieldUtil.listarEnums(METODO_INSTALACAO.class) + ".",
                     ErrosSistema.TIPO_DE_INSTALACAO_INVALIDA);
@@ -38,7 +38,7 @@ public class ValidarConstantesGeral implements Validador {
 
         // valida tipo do cabo
         if (entrada.getTipoCabo() == null ||
-                FieldUtil.enumContem(TIPO_CABO.class, entrada.getTipoCabo())) {
+                FieldUtil.enumNaoContem(TIPO_CABO.class, entrada.getTipoCabo())) {
             throw new ValidacaoException("Tipo de cabo informado: " + entrada.getTipoCabo() + ". " +
                     "Valores aceitos: " + FieldUtil.listarEnums(TIPO_CABO.class) + ".",
                     ErrosSistema.MATERIAL_DO_CABO_INVALIDO);
@@ -46,7 +46,7 @@ public class ValidarConstantesGeral implements Validador {
 
         // valida tipo de circuito
         if (entrada.getTipoCircuito() == null ||
-                FieldUtil.enumContem(TIPO_CIRCUITO.class, entrada.getTipoCircuito())) {
+                FieldUtil.enumNaoContem(TIPO_CIRCUITO.class, entrada.getTipoCircuito())) {
             throw new ValidacaoException("Tipo de circuito informado: " + entrada.getTipoCircuito() + ". " +
                     "Valores aceitos: " + FieldUtil.listarEnums(TIPO_CIRCUITO.class) + ".",
                     ErrosSistema.TIPO_CIRCUITO_INVALIDO);

@@ -11,7 +11,7 @@ import java.math.RoundingMode;
 @Service
 public class CalcularDiametroCaboService {
 
-    public static CalculoDiametroMinimoCabo calcular(BigDecimal resistividade, DadosCircuito circuito) {
+    public CalculoDiametroMinimoCabo calcular(BigDecimal resistividade, DadosCircuito circuito) {
         var calculoDiametroMinimoCabo = new CalculoDiametroMinimoCabo();
         calculoDiametroMinimoCabo.setTipoCabo(circuito.getTipoCabo().getMaterial());
         calculoDiametroMinimoCabo.setResistividadeCabo(resistividade);

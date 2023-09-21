@@ -2,8 +2,6 @@ package br.com.eletrica.domain.validacao;
 
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.domain.model.api.requisicao.DadosEntradaEletrodutos;
-import br.com.eletrica.domain.validacao.eletrodutos.ValidarConstantesEletrodutos;
-import br.com.eletrica.domain.validacao.eletrodutos.ValidarRegrasDeCalculoEletrodutos;
 import br.com.eletrica.domain.validacao.eletrodutos.ValidarValoresNegativosEletrodutos;
 
 import java.util.ArrayList;
@@ -24,9 +22,7 @@ public interface ValidadorEletrodutos {
     private static List<ValidadorEletrodutos> carregarValidadores() {
         List<ValidadorEletrodutos> validadores = new ArrayList<>();
 
-        validadores.add(new ValidarConstantesEletrodutos());
         validadores.add(new ValidarValoresNegativosEletrodutos());
-        validadores.add(new ValidarRegrasDeCalculoEletrodutos());
 
         return validadores;
     }

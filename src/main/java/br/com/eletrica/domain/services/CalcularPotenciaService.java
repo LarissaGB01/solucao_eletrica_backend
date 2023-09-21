@@ -9,7 +9,7 @@ import java.math.RoundingMode;
 @Service
 public class CalcularPotenciaService {
 
-    public static CalculoPotenciaAparente calcularAparente(BigDecimal potenciaAtiva, BigDecimal potenciaAparente, BigDecimal fatorDePotencia) {
+    public CalculoPotenciaAparente calcularAparente(BigDecimal potenciaAtiva, BigDecimal potenciaAparente, BigDecimal fatorDePotencia) {
         var dadosDeCalculo = new CalculoPotenciaAparente();
         dadosDeCalculo.setPotenciaAtiva(potenciaAtiva);
         dadosDeCalculo.setFatorDePotencia(fatorDePotencia);

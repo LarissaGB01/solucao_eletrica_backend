@@ -16,7 +16,7 @@ public class FieldUtil {
         return resposta.substring(0, resposta.length() - 2);
     }
 
-    public static <E extends Enum<E>> boolean enumContem(Class<E> enumClass, String value) {
+    public static <E extends Enum<E>> boolean enumNaoContem(Class<E> enumClass, String value) {
         EnumSet<E> enumSet = EnumSet.allOf(enumClass);
         for (E enumValue : enumSet) {
             if (enumValue.name().equals(value)) {

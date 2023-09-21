@@ -13,13 +13,13 @@ public class ValidarValoresNegativosEletrodutos implements ValidadorEletrodutos 
     public void validar(DadosEntradaEletrodutos entrada) {
 
         // valida diametro cabo
-        if (entrada.getDiametroCabo() != null && entrada.getDiametroCabo().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ValidacaoException("Diametro do cabo informado: " + entrada.getDiametroCabo(),
+        if (entrada.getSecaoNominalCabo() == null || entrada.getSecaoNominalCabo().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ValidacaoException("Diametro do cabo informado: " + entrada.getSecaoNominalCabo(),
                     ErrosSistema.DIAMETRO_CABO_INVALIDO);
         }
 
         // valida quantidade condutores
-        if (entrada.getQuantidadeCondutores() != null && entrada.getQuantidadeCondutores() <= 0) {
+        if (entrada.getQuantidadeCondutores() == null || entrada.getQuantidadeCondutores() <= 0) {
             throw new ValidacaoException("Quantidade de condutores informada: " + entrada.getQuantidadeCondutores(),
                     ErrosSistema.QUANTIDADE_CONDUTORES_INVALIDA);
         }

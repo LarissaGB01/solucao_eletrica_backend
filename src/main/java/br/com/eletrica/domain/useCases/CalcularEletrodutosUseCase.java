@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 @RequiredArgsConstructor
@@ -21,15 +22,18 @@ public class CalcularEletrodutosUseCase {
     public DadosResposta calcularSemCondutores(DadosEntradaEletrodutos entrada) throws ValidacaoException {
 
         var resposta = new DadosResposta();
-        resposta.getDadosUtilizadosParaCalculo().getCalculoEletroduto().setDiametroCabo(entrada.getDiametroCabo());
+        resposta.getDadosUtilizadosParaCalculo().getCalculoEletroduto().setSecaoNominalCabo(entrada.getSecaoNominalCabo());
         resposta.getDadosUtilizadosParaCalculo().getCalculoEletroduto().setQuantidadeCondutores(entrada.getQuantidadeCondutores());
 
         // Validação
         ValidadorEletrodutos.validarRequisicao(entrada);
 
-        var diametroMinimo = entrada.getDiametroCabo()
-                .multiply(BigDecimal.valueOf(entrada.getQuantidadeCondutores()))
-                .multiply(BigDecimal.valueOf(100/40));
+        var diametroCondutor = Math.sqrt(entrada.getSecaoNominalCabo()
+                .multiply(BigDecimal.valueOf(4))
+                .divide(BigDecimal.valueOf(Math.PI), RoundingMode.HALF_EVEN).doubleValue());
+        resposta.getDadosUtilizadosParaCalculo().getCalculoEletroduto().setDiametroCabo(diametroCondutor);
+
+        var diametroMinimo = BigDecimal.valueOf(diametroCondutor * entrada.getQuantidadeCondutores() * 100/40);
         resposta.getDadosUtilizadosParaCalculo().getCalculoEletroduto().setDiametroMinimoCalculado(diametroMinimo);
 
         // Buscar disjuntor recomendado
@@ -62,7 +66,7 @@ public class CalcularEletrodutosUseCase {
 
         // dimensionar disjuntor
         var requisicaoEletrodutos = new DadosEntradaEletrodutos();
-        requisicaoEletrodutos.setDiametroCabo(dadosCondutores.getDadosDimensionados().getCabeamento().getDiametroExternoCaboRecomendado());
+        requisicaoEletrodutos.setSecaoNominalCabo(dadosCondutores.getDadosDimensionados().getCabeamento().getSecaoNominalCondutor());
         requisicaoEletrodutos.setQuantidadeCondutores(dadosCondutores.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor().getCalculoCorrenteProjeto().getQuantidadeCircuitosAgrupados());
 
         return calcularSemCondutores(requisicaoEletrodutos);

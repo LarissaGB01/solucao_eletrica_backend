@@ -41,7 +41,7 @@ public class ExemplosEletrodutos {
                 "FROM " +
                 "   normativas.exemplos_eletrodutos " +
                 "WHERE " +
-                "   diametro_interno > ? " +
+                "   diametro_externo > ? " +
                 "ORDER BY diametro_interno ASC " +
                 "LIMIT 1";
     }

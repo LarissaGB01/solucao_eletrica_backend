@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class CalculoEletroduto {
+    private BigDecimal secaoNominalCabo = BigDecimal.ZERO;
+    private Double diametroCabo;
     private Integer quantidadeCondutores;
-    private BigDecimal diametroCabo = BigDecimal.ZERO;
     private BigDecimal diametroMinimoCalculado = BigDecimal.ZERO;
 }
