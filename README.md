@@ -1,48 +1,47 @@
 # solucao_eletrica_backend
 
-## Para rodar o projeto
+## Indice
+- [solucao_eletrica_backend](#solucaoeletricabackend)
+  - [Indice](#indice)
+  - [Contextualização do projeto](#contextualização-do-projeto)
+  - [Documentação Teórica](#documentação-teórica)
+  - [Rodando o projeto](#rodando-o-projeto)
+  - [Endpoints](#endpoints)
+
+## Contextualização do projeto
+
+Trabalho de Conclusão de Curso (TCC) apresentado como um dos requisitos para a conclusão do curso de Engenharia Elétrica do UniCEUB – Centro Universitário de Brasília.
+
+**DESENVOLVIMENTO DE APLICATIVO PARA DIMENSIONAMENTO DE CABOS, DISJUNTOR E ELETRODUTO VERSÃO ANDROID**
+
+Orientador (a): Luciano Henrique Duque
+
+Desenvolvedor (a): Larissa Galvão Barcelos
+
+Maiores informações sobre o contexto do trabalho e o objetivo do mesmo estão disponíveis [aqui](docs/introducaoTCC.md).
+<p align="center">Brasília, 2023</p>
+
+## Documentação Teórica
+
+A lógica útilizada para a realização dos cálculos presentes nessa aplicação e um exemplo de utilização dos mesmos foram documentados [nesse pdf](docs/passo_a_passo.pdf), disponível para consulta.
+
+É importante mencionar que o dimensionamento de condutores é feito com base no cálculo da seção mínima do condutor. Todos os cálculos são baseados na norma NRB5410 e nas teorias sobre o assunto de dimensionamento publicadas até o dia 21/09/2023.
+
+## Rodando o projeto
+
 O projeto foi construido utilizando maven e spring-boot, logo para rodar o projeto utilize o comando:
 ```
 mvn clean spring-boot:run
 ```
-O swagger da aplicacao esta disponivel nesse [link](http://localhost:8080/swagger-ui.html), quando o projeto e rodado localmente
+
+Quando rodado localmente, fica disponível o [swagger](http://localhost:8080/swagger-ui.html) dessa aplicação para acesso aos endpoints fornecidos.
 
 ## Endpoints
+
 Para a conexao com o endpoint para calculo de dimensionamento dos elementos eletricos, 
-deve-se chamar o endpoint '/dimensionar' com o metodo POST, utilizado o JSON com os dados:
+basta acionar os endpoints disponibilizados. 
 
-### Requisicao
-
-#### Chamada
-| nome do campo                | obrigatorio | tipo    | descricao                                                                                              |
-|------------------------------|-------------|---------|--------------------------------------------------------------------------------------------------------|
-| tipoCircuito                 | sim         | string  | tipo do circuito em questao. Valores aceitos sao "DISTRIBUICAO" e "TERMINAL"                           |
-| utilizacaoCircuito           | sim         | string  | forma de utilizacao do circuito em questao. Valores aceitos sao "TOMADA" e "ILUMINACAO"                |
-| fasesVoltagem                | sim         | string  | quantidade de fases do circuito em questao. Valores aceitos sao "MONOFASICO", "BIFASICO" e "TRIFASICO" |
-| voltagem                     | sim         | inteiro | valor da voltagem no sistema                                                                           |
-| metodoInstalacao             | sim         | string  | metodo de instalacao dos cabos. Valores aceitos sao "A1", "A2", "B1", "B2", "C" e "D"                  |
-| tipoCabo                     | sim         | string  | material do cabo utilizado no projeto. Valores aceitos sao "ALUMINIO", "EPR" e "PVC"                   |
-| potenciaAtiva                | nao         | inteiro | valor da potencia ativa do sistema                                                                     |
-| potenciaAparente             | nao         | inteiro | valor da potencia aparente do sistema                                                                  |
-| fatorDePotencia              | nao         | decimal | valor do fator de potencia do sistema                                                                  |
-| temperaturaAmbiente          | sim         | inteiro | valor da temperatura ambiente do local da instalacao                                                   |
-| quantidadeCircuitosAgrupados | sim         | inteiro | quantidade de circuitos agrupados na instalacao                                                        |
-| comprimentoFio               | sim         | inteiro | valor do comprimento do fio que sera utilizado                                                         |
-
-### Exemplo:
-```JSON
-{
-    "tipoCircuito": "DISTRIBUICAO",
-    "utilizacaoCircuito": "TOMADA",
-    "fasesVoltagem": "TRIFASICO",
-    "voltagem": 380,
-    "metodoInstalacao": "A1",
-    "tipoCabo": "ALUMINIO",
-    "potenciaAtiva": 12000,
-    "potenciaAparente": 0,
-    "fatorDePotencia": 0.8,
-    "temperaturaAmbiente": 50,
-    "quantidadeCircuitosAgrupados": 2,
-    "comprimentoFio": 60
-}
-```
+* [POST/dimensionar](docs/endpoints/postDimensionar.md)
+* [POST/dimensionar/condutores](docs/endpoints/postDimensionarCondutores.md)
+* [POST/dimensionar/disjuntores](docs/endpoints/postDimensionarDisjuntores.md)
+* [POST/dimensionar/eletrodutos](docs/endpoints/postDimensionarEletrodutos.md)
