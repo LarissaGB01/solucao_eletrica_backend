@@ -8,20 +8,20 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CalculoEletrodutoTest {
+class CalculoPotenciaAparenteTest {
 
     @Test
     public void testaModelo() {
-        var modelo = new CalculoEletroduto();
+        var modelo = new CalculoPotenciaAparente();
 
-        modelo.setQuantidadeCondutores(1);
-        modelo.setDiametroCabo(1.0);
-        modelo.setDiametroMinimoCalculado(BigDecimal.ONE);
-        modelo.setSecaoNominalCabo(BigDecimal.ONE);
+        modelo.setIndicadorPotenciaAparenteInformada(true);
+        modelo.setPotenciaAparente(BigDecimal.ONE);
+        modelo.setPotenciaAtiva(BigDecimal.ONE);
+        modelo.setFatorDePotencia(BigDecimal.ONE);
 
-        assertNotNull(modelo.getQuantidadeCondutores());
-        assertNotNull(modelo.getDiametroCabo());
-        assertNotNull(modelo.getDiametroMinimoCalculado());
-        assertNotNull(modelo.getSecaoNominalCabo());
+        assertNotNull(modelo.getIndicadorPotenciaAparenteInformada());
+        assertNotNull(modelo.getPotenciaAparente());
+        assertNotNull(modelo.getPotenciaAtiva());
+        assertNotNull(modelo.getFatorDePotencia());
     }
 }

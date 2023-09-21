@@ -2,21 +2,20 @@ package br.com.eletrica.domain.validacao.geral;
 
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.fixtures.APIFixtures;
-import br.com.eletrica.fixtures.ModelFixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ValidarValoresNegativosGeralTest {
+class ValidarConstantesGeralTest {
 
     @Test
     public void deveValidarComSucesso() throws ValidacaoException {
-        var validador = new ValidarValoresNegativosGeral();
+        var validador = new ValidarConstantesGeral();
         var dados = APIFixtures.gerarRequisicaoGeral();
 
         assertDoesNotThrow(() -> validador.validar(dados));
@@ -24,80 +23,51 @@ class ValidarValoresNegativosGeralTest {
 
     @Test
     public void deveValidarComErroCampoNulo() throws ValidacaoException {
-        var validador = new ValidarValoresNegativosGeral();
+        var validador = new ValidarConstantesGeral();
 
-        var dadoNuloVoltagem = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloVoltagem.setVoltagem(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloVoltagem));
+        var dadoNuloUtilizacaoCircuito = APIFixtures.gerarRequisicaoGeral();
+        dadoNuloUtilizacaoCircuito.setUtilizacaoCircuito(null);
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloUtilizacaoCircuito));
 
-        var dadoNuloTemperaturaAmbiente = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloTemperaturaAmbiente.setTemperaturaAmbiente(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloTemperaturaAmbiente));
+        var dadoNuloFasesVoltagem = APIFixtures.gerarRequisicaoGeral();
+        dadoNuloFasesVoltagem.setFasesVoltagem(null);
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloFasesVoltagem));
 
-        var dadoNuloQuantidadeCircuitosAgrupados = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloQuantidadeCircuitosAgrupados.setQuantidadeCircuitosAgrupados(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloQuantidadeCircuitosAgrupados));
+        var dadoNuloMetodoInstalacao = APIFixtures.gerarRequisicaoGeral();
+        dadoNuloMetodoInstalacao.setMetodoInstalacao(null);
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloMetodoInstalacao));
 
-        var dadoNuloComprimentoFio = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloComprimentoFio.setComprimentoFio(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloComprimentoFio));
+        var dadoNuloTipoCabo = APIFixtures.gerarRequisicaoGeral();
+        dadoNuloTipoCabo.setTipoCabo(null);
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloTipoCabo));
+
+        var dadoNuloTipoCircuito = APIFixtures.gerarRequisicaoGeral();
+        dadoNuloTipoCircuito.setTipoCircuito(null);
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloTipoCircuito));
     }
 
     @Test
-    public void deveValidarComErroCampoZerado() throws ValidacaoException {
-        var validador = new ValidarValoresNegativosGeral();
+    public void deveValidarComErroCampoInvalido() throws ValidacaoException {
+        var validador = new ValidarConstantesGeral();
 
-        var dadoZeradoVoltagem = APIFixtures.gerarRequisicaoGeral();
-        dadoZeradoVoltagem.setVoltagem(0);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoZeradoVoltagem));
+        var dadoInvalidoUtilizacaoCircuito = APIFixtures.gerarRequisicaoGeral();
+        dadoInvalidoUtilizacaoCircuito.setUtilizacaoCircuito("a");
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoUtilizacaoCircuito));
 
-        var dadoZeradoTemperaturaAmbiente = APIFixtures.gerarRequisicaoGeral();
-        dadoZeradoTemperaturaAmbiente.setTemperaturaAmbiente(0);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoZeradoTemperaturaAmbiente));
+        var dadoInvalidoFasesVoltagem = APIFixtures.gerarRequisicaoGeral();
+        dadoInvalidoFasesVoltagem.setFasesVoltagem("a");
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoFasesVoltagem));
 
-        var dadoZeradoQuantidadeCircuitosAgrupados = APIFixtures.gerarRequisicaoGeral();
-        dadoZeradoQuantidadeCircuitosAgrupados.setQuantidadeCircuitosAgrupados(0);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoZeradoQuantidadeCircuitosAgrupados));
+        var dadoInvalidoMetodoInstalacao = APIFixtures.gerarRequisicaoGeral();
+        dadoInvalidoMetodoInstalacao.setMetodoInstalacao("a");
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoMetodoInstalacao));
 
-        var dadoZeradoComprimentoFio = APIFixtures.gerarRequisicaoGeral();
-        dadoZeradoComprimentoFio.setComprimentoFio(0);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoZeradoComprimentoFio));
-    }
+        var dadoInvalidoTipoCabo = APIFixtures.gerarRequisicaoGeral();
+        dadoInvalidoTipoCabo.setTipoCabo("a");
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoTipoCabo));
 
-    @Test
-    public void deveValidarComErroCampoNegativo() throws ValidacaoException {
-        var validador = new ValidarValoresNegativosGeral();
-
-        var dadoNegativoVoltagem = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoVoltagem.setVoltagem(-1);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoVoltagem));
-
-        var dadoNegativoTemperaturaAmbiente = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoTemperaturaAmbiente.setTemperaturaAmbiente(-1);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoTemperaturaAmbiente));
-
-        var dadoNegativoQuantidadeCircuitosAgrupados = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoQuantidadeCircuitosAgrupados.setQuantidadeCircuitosAgrupados(-1);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoQuantidadeCircuitosAgrupados));
-
-        var dadoNegativoComprimentoFio = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoComprimentoFio.setComprimentoFio(-1);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoComprimentoFio));
-
-        var dadoNegativoPotenciaAtiva = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoPotenciaAtiva.setPotenciaAtiva(BigDecimal.valueOf(-1));
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoPotenciaAtiva));
-
-        var dadoNegativoPotenciaAparente = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoPotenciaAparente.setPotenciaAparente(BigDecimal.valueOf(-1));
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoPotenciaAparente));
-
-        var dadoNegativoFatorDePotencia = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoFatorDePotencia.setFatorDePotencia(BigDecimal.valueOf(-1));
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoFatorDePotencia));
-
-        var dadoMaiorQueUmFatorDePotencia = APIFixtures.gerarRequisicaoGeral();
-        dadoMaiorQueUmFatorDePotencia.setFatorDePotencia(BigDecimal.valueOf(2));
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoMaiorQueUmFatorDePotencia));
+        var dadoInvalidoTipoCircuito = APIFixtures.gerarRequisicaoGeral();
+        dadoInvalidoTipoCircuito.setTipoCircuito("a");
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoTipoCircuito));
     }
 }

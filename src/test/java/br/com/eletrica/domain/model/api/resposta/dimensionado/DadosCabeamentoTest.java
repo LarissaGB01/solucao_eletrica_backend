@@ -1,29 +1,27 @@
 package br.com.eletrica.domain.model.api.resposta.dimensionado;
 
-import br.com.eletrica.domain.model.api.resposta.DadosRespostaCondutores;
-import br.com.eletrica.domain.model.api.resposta.calculo.CalculoSecaoCondutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DadosEletrodutoTest {
+class DadosCabeamentoTest {
 
     @Test
     public void testaModelo() {
-        var modelo = new DadosEletroduto();
+        var modelo = new DadosCabeamento();
 
-        modelo.setDiametroExternoEletrodutoSugerido(BigDecimal.ONE);
-        modelo.setDiametroInternoEletrodutoSugerido(BigDecimal.ONE);
-        modelo.setDiametroNominalEletrodutoSugeridoMilimetros(1);
-        modelo.setDiametroNominalEletrodutoSugeridoPolegadas("a");
+        modelo.setCorrenteMaximaCondutor(BigDecimal.ONE);
+        modelo.setDiametroNominalCaboRecomendado(BigDecimal.ONE);
+        modelo.setDiametroExternoCaboRecomendado(BigDecimal.ONE);
+        modelo.setSecaoNominalCondutor(BigDecimal.ONE);
 
-        assertNotNull(modelo.getDiametroExternoEletrodutoSugerido());
-        assertNotNull(modelo.getDiametroInternoEletrodutoSugerido());
-        assertNotNull(modelo.getDiametroNominalEletrodutoSugeridoMilimetros());
-        assertNotNull(modelo.getDiametroNominalEletrodutoSugeridoPolegadas());
+        assertNotNull(modelo.getCorrenteMaximaCondutor());
+        assertNotNull(modelo.getDiametroNominalCaboRecomendado());
+        assertNotNull(modelo.getDiametroExternoCaboRecomendado());
+        assertNotNull(modelo.getSecaoNominalCondutor());
     }
 }

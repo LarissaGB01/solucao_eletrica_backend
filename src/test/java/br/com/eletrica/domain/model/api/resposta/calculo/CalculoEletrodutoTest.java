@@ -1,28 +1,27 @@
 package br.com.eletrica.domain.model.api.resposta.calculo;
 
-import br.com.eletrica.domain.model.api.resposta.DadosResposta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CalculoDisjuntorTest {
+class CalculoEletrodutoTest {
 
     @Test
     public void testaModelo() {
-        var modelo = new CalculoDisjuntor();
+        var modelo = new CalculoEletroduto();
 
-        modelo.setCabosCarregados(1);
-        modelo.setFasesVoltagem("a");
-        modelo.setCorrenteProjeto(BigDecimal.ONE);
-        modelo.setCorrenteMaximaCabo(BigDecimal.ONE);
+        modelo.setQuantidadeCondutores(1);
+        modelo.setDiametroCabo(1.0);
+        modelo.setDiametroMinimoCalculado(BigDecimal.ONE);
+        modelo.setSecaoNominalCabo(BigDecimal.ONE);
 
-        assertNotNull(modelo.getCabosCarregados());
-        assertNotNull(modelo.getFasesVoltagem());
-        assertNotNull(modelo.getCorrenteProjeto());
-        assertNotNull(modelo.getCorrenteMaximaCabo());
+        assertNotNull(modelo.getQuantidadeCondutores());
+        assertNotNull(modelo.getDiametroCabo());
+        assertNotNull(modelo.getDiametroMinimoCalculado());
+        assertNotNull(modelo.getSecaoNominalCabo());
     }
 }

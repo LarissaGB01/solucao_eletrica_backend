@@ -5,25 +5,25 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class FatorTemperaturaTest {
+class ExemplosDisjuntoresTest {
     @Test
     public void testaModelo() {
-        var modelo = new FatorTemperatura();
+        var domain = new ExemplosDisjuntores();
 
-        modelo.setTemperatura(1);
-        modelo.setFatorCorrecao(BigDecimal.ONE);
-        modelo.setIsolacao("a");
+        domain.setCorrenteNominal(1);
+        domain.setCondutoresCarregados(1);
+        domain.setNomeDisjuntor("a");
 
-        assertNotNull(modelo.getTemperatura());
-        assertNotNull(modelo.getFatorCorrecao());
-        assertNotNull(modelo.getIsolacao());
+        assertNotNull(domain.getCorrenteNominal());
+        assertNotNull(domain.getNomeDisjuntor());
+        assertNotNull(domain.getCondutoresCarregados());
 
-        assertNotNull(FatorTemperatura.getNomeTabela());
-        assertNotNull(FatorTemperatura.getNomeColunaTemperatura());
-        assertNotNull(FatorTemperatura.getNomeColunaFatorCorrecao());
-        assertNotNull(FatorTemperatura.getNomeColunaIsolacao());
+        assertNotNull(ExemplosDisjuntores.getNomeTabela());
+        assertNotNull(ExemplosDisjuntores.getNomeColunaCorrenteNominal());
+        assertNotNull(ExemplosDisjuntores.getNomeColunaNomeDisjuntor());
+        assertNotNull(ExemplosDisjuntores.getNomeColunaCondutoresCarregados());
     }
 }

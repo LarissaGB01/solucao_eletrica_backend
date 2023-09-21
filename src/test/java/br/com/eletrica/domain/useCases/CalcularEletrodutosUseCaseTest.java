@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CalcularDisjuntoresUseCaseTest {
+public class CalcularEletrodutosUseCaseTest {
     @Mock
     private RepositorioNBR repositorioNBR;
 
@@ -24,7 +24,7 @@ public class CalcularDisjuntoresUseCaseTest {
     private CalcularDiametroCabosUseCase calcularDiametroCabosUseCase;
 
     @InjectMocks
-    private CalcularDisjuntoresUseCase calcularDisjuntoresUseCase;
+    private CalcularEletrodutosUseCase calcularEletrodutosUseCase;
 
     @BeforeAll
     public void setUp() {
@@ -38,10 +38,10 @@ public class CalcularDisjuntoresUseCaseTest {
 
     @Test
     public void deveCalcularComSucesso() throws ValidacaoException {
-        Mockito.when(repositorioNBR.buscarExemploDisjuntor(Mockito.any())).thenReturn(ModelFixture.gerarExemploDisjuntor()).thenReturn(null);
+        Mockito.when(repositorioNBR.buscarExemploEletroduto(Mockito.any())).thenReturn(ModelFixture.gerarExemploEletroduto()).thenReturn(null);
         Mockito.when(calcularDiametroCabosUseCase.calcular(Mockito.any())).thenReturn(APIFixtures.gerarRespostaGeral());
 
-        assertDoesNotThrow(() -> calcularDisjuntoresUseCase.calcularComCondutores(APIFixtures.gerarRequisicaoGeral()));
-        assertDoesNotThrow(() -> calcularDisjuntoresUseCase.calcularSemCondutores(APIFixtures.gerarRequisicaoDisjuntores()));
+        assertDoesNotThrow(() -> calcularEletrodutosUseCase.calcularComCondutores(APIFixtures.gerarRequisicaoGeral()));
+        assertDoesNotThrow(() -> calcularEletrodutosUseCase.calcularSemCondutores(APIFixtures.gerarRequisicaoEletrodutos()));
     }
 }

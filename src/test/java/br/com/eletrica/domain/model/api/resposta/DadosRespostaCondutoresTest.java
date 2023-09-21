@@ -1,8 +1,8 @@
 package br.com.eletrica.domain.model.api.resposta;
 
-import br.com.eletrica.domain.model.api.resposta.calculo.CalculoDisjuntor;
 import br.com.eletrica.domain.model.api.resposta.calculo.CalculoEletroduto;
-import br.com.eletrica.domain.model.api.resposta.dimensionado.DadosDisjuntor;
+import br.com.eletrica.domain.model.api.resposta.calculo.CalculoSecaoCondutor;
+import br.com.eletrica.domain.model.api.resposta.dimensionado.DadosCabeamento;
 import br.com.eletrica.domain.model.api.resposta.dimensionado.DadosEletroduto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,17 +10,16 @@ import org.junit.jupiter.api.TestInstance;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DadosRespostaEletrodutoTest {
+class DadosRespostaCondutoresTest {
 
     @Test
     public void testaModelo() {
-        var modelo = new DadosRespostaEletroduto();
+        var modelo = new DadosRespostaCondutores();
 
-        modelo.setEletroduto(new DadosEletroduto());
-        modelo.setDadosUtilizadosParaCalculo(new CalculoEletroduto());
+        modelo.setCabeamento(new DadosCabeamento());
+        modelo.setDadosUtilizadosParaCalculo(new CalculoSecaoCondutor());
 
-        assertNotNull(modelo.getEletroduto());
+        assertNotNull(modelo.getCabeamento());
         assertNotNull(modelo.getDadosUtilizadosParaCalculo());
     }
-
 }

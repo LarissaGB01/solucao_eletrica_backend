@@ -1,9 +1,12 @@
-package br.com.eletrica.domain.validacao.geral;
+package br.com.eletrica.domain.validacao.disjuntores;
 
 import br.com.eletrica.common.exception.ValidacaoException;
+import br.com.eletrica.domain.validacao.geral.ValidarRegrasDeCalculoGeral;
 import br.com.eletrica.fixtures.APIFixtures;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,59 +16,24 @@ class ValidarRegrasDeCalculoDisjuntoresTest {
 
     @Test
     public void deveValidarComSucesso() throws ValidacaoException {
-        var validador = new ValidarConstantesGeral();
-        var dados = APIFixtures.gerarRequisicaoGeral();
+        var validador = new ValidarRegrasDeCalculoDisjuntores();
+        var dados = APIFixtures.gerarRequisicaoDisjuntores();
 
         assertDoesNotThrow(() -> validador.validar(dados));
     }
 
     @Test
-    public void deveValidarComErroCampoNulo() throws ValidacaoException {
-        var validador = new ValidarConstantesGeral();
+    public void deveValidarComErro_CORRENTES_INFORMADAS_INVALIDAS() throws ValidacaoException {
+        var validador = new ValidarRegrasDeCalculoDisjuntores();
 
-        var dadoNuloUtilizacaoCircuito = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloUtilizacaoCircuito.setUtilizacaoCircuito(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloUtilizacaoCircuito));
+        var dadosAcima = APIFixtures.gerarRequisicaoDisjuntores();
+        dadosAcima.setCorrenteMaximaCabo(BigDecimal.valueOf(1));
+        dadosAcima.setCorrenteProjeto(BigDecimal.valueOf(1));
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadosAcima));
 
-        var dadoNuloFasesVoltagem = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloFasesVoltagem.setFasesVoltagem(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloFasesVoltagem));
-
-        var dadoNuloMetodoInstalacao = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloMetodoInstalacao.setMetodoInstalacao(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloMetodoInstalacao));
-
-        var dadoNuloTipoCabo = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloTipoCabo.setTipoCabo(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloTipoCabo));
-
-        var dadoNuloTipoCircuito = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloTipoCircuito.setTipoCircuito(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloTipoCircuito));
-    }
-
-    @Test
-    public void deveValidarComErroCampoInvalido() throws ValidacaoException {
-        var validador = new ValidarConstantesGeral();
-
-        var dadoInvalidoUtilizacaoCircuito = APIFixtures.gerarRequisicaoGeral();
-        dadoInvalidoUtilizacaoCircuito.setUtilizacaoCircuito("a");
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoUtilizacaoCircuito));
-
-        var dadoInvalidoFasesVoltagem = APIFixtures.gerarRequisicaoGeral();
-        dadoInvalidoFasesVoltagem.setFasesVoltagem("a");
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoFasesVoltagem));
-
-        var dadoInvalidoMetodoInstalacao = APIFixtures.gerarRequisicaoGeral();
-        dadoInvalidoMetodoInstalacao.setMetodoInstalacao("a");
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoMetodoInstalacao));
-
-        var dadoInvalidoTipoCabo = APIFixtures.gerarRequisicaoGeral();
-        dadoInvalidoTipoCabo.setTipoCabo("a");
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoTipoCabo));
-
-        var dadoInvalidoTipoCircuito = APIFixtures.gerarRequisicaoGeral();
-        dadoInvalidoTipoCircuito.setTipoCircuito("a");
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoInvalidoTipoCircuito));
+        var dadosIguais = APIFixtures.gerarRequisicaoDisjuntores();
+        dadosIguais.setCorrenteMaximaCabo(BigDecimal.valueOf(1));
+        dadosIguais.setCorrenteProjeto(BigDecimal.valueOf(10));
+        assertThrows(ValidacaoException.class, () -> validador.validar(dadosIguais));
     }
 }

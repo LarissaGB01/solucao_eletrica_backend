@@ -15,88 +15,53 @@ class ValidarRegrasDeCalculoGeralTest {
 
     @Test
     public void deveValidarComSucesso() throws ValidacaoException {
-        var validador = new ValidarValoresNegativosGeral();
+        var validador = new ValidarRegrasDeCalculoGeral();
         var dados = APIFixtures.gerarRequisicaoGeral();
 
         assertDoesNotThrow(() -> validador.validar(dados));
     }
 
     @Test
-    public void deveValidarComErroCampoNulo() throws ValidacaoException {
-        var validador = new ValidarValoresNegativosGeral();
+    public void deveValidarComErro_AMBAS_POTENCIAS_PREENCHIDAS() throws ValidacaoException {
+        var validador = new ValidarRegrasDeCalculoGeral();
 
-        var dadoNuloVoltagem = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloVoltagem.setVoltagem(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloVoltagem));
-
-        var dadoNuloTemperaturaAmbiente = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloTemperaturaAmbiente.setTemperaturaAmbiente(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloTemperaturaAmbiente));
-
-        var dadoNuloQuantidadeCircuitosAgrupados = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloQuantidadeCircuitosAgrupados.setQuantidadeCircuitosAgrupados(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloQuantidadeCircuitosAgrupados));
-
-        var dadoNuloComprimentoFio = APIFixtures.gerarRequisicaoGeral();
-        dadoNuloComprimentoFio.setComprimentoFio(null);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNuloComprimentoFio));
+        var dados = APIFixtures.gerarRequisicaoGeral();
+        dados.setPotenciaAparente(BigDecimal.valueOf(1));
+        dados.setPotenciaAtiva(BigDecimal.valueOf(1));
+        dados.setFatorDePotencia(BigDecimal.valueOf(0));
+        assertThrows(ValidacaoException.class, () -> validador.validar(dados));
     }
 
     @Test
-    public void deveValidarComErroCampoZerado() throws ValidacaoException {
-        var validador = new ValidarValoresNegativosGeral();
+    public void deveValidarComErro_NENHUMA_POTENCIA_PREENCHIDA() throws ValidacaoException {
+        var validador = new ValidarRegrasDeCalculoGeral();
 
-        var dadoZeradoVoltagem = APIFixtures.gerarRequisicaoGeral();
-        dadoZeradoVoltagem.setVoltagem(0);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoZeradoVoltagem));
-
-        var dadoZeradoTemperaturaAmbiente = APIFixtures.gerarRequisicaoGeral();
-        dadoZeradoTemperaturaAmbiente.setTemperaturaAmbiente(0);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoZeradoTemperaturaAmbiente));
-
-        var dadoZeradoQuantidadeCircuitosAgrupados = APIFixtures.gerarRequisicaoGeral();
-        dadoZeradoQuantidadeCircuitosAgrupados.setQuantidadeCircuitosAgrupados(0);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoZeradoQuantidadeCircuitosAgrupados));
-
-        var dadoZeradoComprimentoFio = APIFixtures.gerarRequisicaoGeral();
-        dadoZeradoComprimentoFio.setComprimentoFio(0);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoZeradoComprimentoFio));
+        var dados = APIFixtures.gerarRequisicaoGeral();
+        dados.setPotenciaAparente(BigDecimal.valueOf(0));
+        dados.setPotenciaAtiva(BigDecimal.valueOf(0));
+        dados.setFatorDePotencia(BigDecimal.valueOf(0));
+        assertThrows(ValidacaoException.class, () -> validador.validar(dados));
     }
 
     @Test
-    public void deveValidarComErroCampoNegativo() throws ValidacaoException {
-        var validador = new ValidarValoresNegativosGeral();
+    public void deveValidarComErro_POTENCIAS_APARENTE_E_FATOR_POTENCIA_PREENCHIDOS() throws ValidacaoException {
+        var validador = new ValidarRegrasDeCalculoGeral();
 
-        var dadoNegativoVoltagem = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoVoltagem.setVoltagem(-1);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoVoltagem));
+        var dados = APIFixtures.gerarRequisicaoGeral();
+        dados.setPotenciaAparente(BigDecimal.valueOf(1));
+        dados.setPotenciaAtiva(BigDecimal.valueOf(0));
+        dados.setFatorDePotencia(BigDecimal.valueOf(1));
+        assertThrows(ValidacaoException.class, () -> validador.validar(dados));
+    }
 
-        var dadoNegativoTemperaturaAmbiente = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoTemperaturaAmbiente.setTemperaturaAmbiente(-1);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoTemperaturaAmbiente));
+    @Test
+    public void deveValidarComErro_POTENCIA_ATIVA_PREENCHIDA_E_FATOR_POTENCIA_NAO() throws ValidacaoException {
+        var validador = new ValidarRegrasDeCalculoGeral();
 
-        var dadoNegativoQuantidadeCircuitosAgrupados = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoQuantidadeCircuitosAgrupados.setQuantidadeCircuitosAgrupados(-1);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoQuantidadeCircuitosAgrupados));
-
-        var dadoNegativoComprimentoFio = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoComprimentoFio.setComprimentoFio(-1);
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoComprimentoFio));
-
-        var dadoNegativoPotenciaAtiva = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoPotenciaAtiva.setPotenciaAtiva(BigDecimal.valueOf(-1));
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoPotenciaAtiva));
-
-        var dadoNegativoPotenciaAparente = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoPotenciaAparente.setPotenciaAparente(BigDecimal.valueOf(-1));
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoPotenciaAparente));
-
-        var dadoNegativoFatorDePotencia = APIFixtures.gerarRequisicaoGeral();
-        dadoNegativoFatorDePotencia.setFatorDePotencia(BigDecimal.valueOf(-1));
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoNegativoFatorDePotencia));
-
-        var dadoMaiorQueUmFatorDePotencia = APIFixtures.gerarRequisicaoGeral();
-        dadoMaiorQueUmFatorDePotencia.setFatorDePotencia(BigDecimal.valueOf(2));
-        assertThrows(ValidacaoException.class, () -> validador.validar(dadoMaiorQueUmFatorDePotencia));
+        var dados = APIFixtures.gerarRequisicaoGeral();
+        dados.setPotenciaAparente(BigDecimal.valueOf(0));
+        dados.setPotenciaAtiva(BigDecimal.valueOf(1));
+        dados.setFatorDePotencia(BigDecimal.valueOf(0));
+        assertThrows(ValidacaoException.class, () -> validador.validar(dados));
     }
 }

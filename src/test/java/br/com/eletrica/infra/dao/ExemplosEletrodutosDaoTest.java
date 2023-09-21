@@ -3,8 +3,8 @@ package br.com.eletrica.infra.dao;
 import br.com.eletrica.common.exception.ValidacaoException;
 import br.com.eletrica.common.util.ConnectionUtil;
 import br.com.eletrica.fixtures.ModelFixture;
-import br.com.eletrica.infra.entidade.ExemplosDisjuntores;
-import br.com.eletrica.infra.mapper.ExemplosDisjuntoresMapper;
+import br.com.eletrica.infra.entidade.ExemplosEletrodutos;
+import br.com.eletrica.infra.mapper.ExemplosEletrodutosMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,16 +24,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.anyString;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ExemplosDisjuntoresDaoTest {
+public class ExemplosEletrodutosDaoTest {
 
     @Mock
     private ConnectionUtil connectionUtil;
 
     @Mock
-    private ExemplosDisjuntoresMapper mapper;
+    private ExemplosEletrodutosMapper mapper;
 
     @InjectMocks
-    private ExemplosDisjuntoresDao exemplosDisjuntoresDao;
+    private ExemplosEletrodutosDao exemplosEletrodutosDao;
 
     @BeforeAll
     public void setUp() {
@@ -48,19 +49,19 @@ public class ExemplosDisjuntoresDaoTest {
         Connection connection = Mockito.mock(Connection.class);
         PreparedStatement statement = Mockito.mock(PreparedStatement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
-        var dados = ModelFixture.gerarDadosBuscaDisjuntor();
 
         Mockito.when(connectionUtil.getConnection()).thenReturn(connection);
         Mockito.when(connection.prepareStatement(anyString())).thenReturn(statement);
         Mockito.when(statement.executeQuery()).thenReturn(resultSet);
         Mockito.when(resultSet.next()).thenReturn(true);
-        Mockito.when(resultSet.getInt(ExemplosDisjuntores.getNomeColunaCondutoresCarregados())).thenReturn(3);
-        Mockito.when(resultSet.getInt(ExemplosDisjuntores.getNomeColunaCorrenteNominal())).thenReturn(3);
-        Mockito.when(resultSet.getString(ExemplosDisjuntores.getNomeColunaNomeDisjuntor())).thenReturn("a");
-        Mockito.when(mapper.toDomain(Mockito.any())).thenReturn(ModelFixture.gerarExemploDisjuntor());
+        Mockito.when(resultSet.getBigDecimal(ExemplosEletrodutos.getNomeColunaDiametroExterno())).thenReturn(BigDecimal.ONE);
+        Mockito.when(resultSet.getBigDecimal(ExemplosEletrodutos.getNomeColunaDiametroInterno())).thenReturn(BigDecimal.ONE);
+        Mockito.when(resultSet.getInt(ExemplosEletrodutos.getNomeColunaDiametroNominalMilimetros())).thenReturn(3);
+        Mockito.when(resultSet.getString(ExemplosEletrodutos.getNomeColunaDiametroNominalPolegadas())).thenReturn("a");
+        Mockito.when(mapper.toDomain(Mockito.any())).thenReturn(ModelFixture.gerarExemploEletroduto());
 
-        assertNotNull(exemplosDisjuntoresDao.buscarExemploDisjuntores(dados));
-        assertDoesNotThrow(() -> exemplosDisjuntoresDao.buscarExemploDisjuntores(dados));
+        assertNotNull(exemplosEletrodutosDao.buscarExemploEletrodutos(BigDecimal.ONE));
+        assertDoesNotThrow(() -> exemplosEletrodutosDao.buscarExemploEletrodutos(BigDecimal.ONE));
     }
 
     @Test
@@ -68,28 +69,26 @@ public class ExemplosDisjuntoresDaoTest {
         Connection connection = Mockito.mock(Connection.class);
         PreparedStatement statement = Mockito.mock(PreparedStatement.class);
         ResultSet resultSet = Mockito.mock(ResultSet.class);
-        var dados = ModelFixture.gerarDadosBuscaDisjuntor();
 
         Mockito.when(connectionUtil.getConnection()).thenReturn(connection);
         Mockito.when(connection.prepareStatement(anyString())).thenReturn(statement);
         Mockito.when(statement.executeQuery()).thenReturn(resultSet);
         Mockito.when(resultSet.next()).thenReturn(false);
-        Mockito.when(mapper.toDomain(Mockito.any())).thenReturn(ModelFixture.gerarExemploDisjuntor());
+        Mockito.when(mapper.toDomain(Mockito.any())).thenReturn(ModelFixture.gerarExemploEletroduto());
 
-        assertNull(exemplosDisjuntoresDao.buscarExemploDisjuntores(dados));
-        assertDoesNotThrow(() -> exemplosDisjuntoresDao.buscarExemploDisjuntores(dados));
+        assertNull(exemplosEletrodutosDao.buscarExemploEletrodutos(java.math.BigDecimal.ONE));
+        assertDoesNotThrow(() -> exemplosEletrodutosDao.buscarExemploEletrodutos(java.math.BigDecimal.ONE));
     }
 
     @Test
     public void testBuscarSecaoMinimaCaboComSQLException() throws SQLException, ValidacaoException {
         Connection connection = Mockito.mock(Connection.class);
         PreparedStatement statement = Mockito.mock(PreparedStatement.class);
-        var dados = ModelFixture.gerarDadosBuscaDisjuntor();
 
         Mockito.when(connectionUtil.getConnection()).thenReturn(connection);
         Mockito.when(connection.prepareStatement(anyString())).thenReturn(statement);
         Mockito.when(statement.executeQuery()).thenThrow(new SQLException());
 
-        assertThrows(ValidacaoException.class, () -> exemplosDisjuntoresDao.buscarExemploDisjuntores(dados));
+        assertThrows(ValidacaoException.class, () -> exemplosEletrodutosDao.buscarExemploEletrodutos(java.math.BigDecimal.ONE));
     }
 }

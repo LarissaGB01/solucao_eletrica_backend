@@ -8,19 +8,25 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ExemplosDisjuntoresTest {
+class ExemplosCabosTest {
     @Test
     public void testaModelo() {
-        var domain = new ExemplosDisjuntores();
+        var domain = new ExemplosCabos();
 
-        domain.setCorrenteNominal(1);
-        domain.setNomeDisjuntor("a");
+        domain.setCabosCarregados(1);
+        domain.setDiametroNominalCondutor(BigDecimal.ONE);
+        domain.setDiametroNominalExterno(BigDecimal.ONE);
+        domain.setSecaoNominal(BigDecimal.ONE);
 
-        assertNotNull(domain.getCorrenteNominal());
-        assertNotNull(domain.getNomeDisjuntor());
+        assertNotNull(domain.getCabosCarregados());
+        assertNotNull(domain.getDiametroNominalCondutor());
+        assertNotNull(domain.getDiametroNominalExterno());
+        assertNotNull(domain.getSecaoNominal());
 
-        assertNotNull(ExemplosDisjuntores.getNomeTabela());
-        assertNotNull(ExemplosDisjuntores.getNomeColunaCorrenteNominal());
-        assertNotNull(ExemplosDisjuntores.getNomeColunaNomeDisjuntor());
+        assertNotNull(ExemplosCabos.getNomeTabela());
+        assertNotNull(ExemplosCabos.getNomeColunaCabosCarregados());
+        assertNotNull(ExemplosCabos.getNomeColunaDiametroNominalCondutor());
+        assertNotNull(ExemplosCabos.getNomeColunaDiametroNominalExterno());
+        assertNotNull(ExemplosCabos.getNomeColunaSecaoNominal());
     }
 }
