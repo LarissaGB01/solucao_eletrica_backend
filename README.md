@@ -1,12 +1,23 @@
-# solucao_eletrica_backend
+<h1 align="center"> Solução Elétrica </h1>
+<h4 align="center">Projeto destinado a ser o backend para uma solução de cálculo de dimensionamento de cabos, disjuntores e condutos</h4>
+<p>
+  <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge" alt="Badge em Desenvolvimento">
+</p>
 
-## Indice
-- [solucao_eletrica_backend](#solucaoeletricabackend)
-  - [Indice](#indice)
-  - [Contextualização do projeto](#contextualização-do-projeto)
-  - [Documentação Teórica](#documentação-teórica)
-  - [Rodando o projeto](#rodando-o-projeto)
-  - [Endpoints](#endpoints)
+
+:woman_technologist:
+[Larissa Galvão Barcelos](https://github.com/LarissaGB01)
+
+
+<h2> Indice </h2>
+
+- [Contextualização do projeto](#contextualização-do-projeto)
+- [Documentação Teórica](#documentação-teórica)
+- [Rodando o projeto](#rodando-o-projeto)
+- [Endpoints](#endpoints)
+- [Configuração local](#configuração-local)
+  - [Banco de Dados](#banco-de-dados)
+  - [Swagger](#swagger)
 
 ## Contextualização do projeto
 
@@ -34,8 +45,6 @@ O projeto foi construido utilizando maven e spring-boot, logo para rodar o proje
 mvn clean spring-boot:run
 ```
 
-Quando rodado localmente, fica disponível o [swagger](http://localhost:8080/swagger-ui.html) dessa aplicação para acesso aos endpoints fornecidos.
-
 ## Endpoints
 
 Para a conexao com o endpoint para calculo de dimensionamento dos elementos eletricos, 
@@ -45,3 +54,15 @@ basta acionar os endpoints disponibilizados.
 * [POST/dimensionar/condutores](docs/endpoints/postDimensionarCondutores.md)
 * [POST/dimensionar/disjuntores](docs/endpoints/postDimensionarDisjuntores.md)
 * [POST/dimensionar/eletrodutos](docs/endpoints/postDimensionarEletrodutos.md)
+
+
+## Configuração local
+
+### Banco de Dados
+Para que o projeto rode localmente é necessário a realização da configuração de um banco de dados. Atenção aos seguintes pontos:
+
+* Clonagem do banco de dados: basta rodar as queries disponíveis [nesse arquivo](src\main\resources\normativas.sql)
+* Configurações banco de dados: devem ser atualizadas [nesse arquivo](src\main\resources\application.properties)
+
+### Swagger
+Quando rodado localmente, fica disponível o [swagger](http://localhost:8080/swagger-ui.html) dessa aplicação para acesso aos endpoints fornecidos.
