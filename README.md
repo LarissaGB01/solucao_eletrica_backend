@@ -61,8 +61,8 @@ basta acionar os endpoints disponibilizados.
 ### Banco de Dados
 Para que o projeto rode localmente é necessário a realização da configuração de um banco de dados. Atenção aos seguintes pontos:
 
-* Clonagem do banco de dados: basta rodar as queries disponíveis [nesse arquivo](src\main\resources\normativas.sql)
-* Configurações banco de dados: devem ser atualizadas [nesse arquivo](src\main\resources\application.properties)
+* As tabelas são automaticamente criadas e populadas quando o projeto é iniciado. Basta que você possua um servidor do mysql rodando localmente.
+* Configurações banco de dados: devem ser atualizadas [nesse arquivo](src/main/resources/application.properties)
 
 ### Swagger
 Quando rodado localmente, fica disponível o [swagger](http://localhost:8080/swagger-ui.html) dessa aplicação para acesso aos endpoints fornecidos.
