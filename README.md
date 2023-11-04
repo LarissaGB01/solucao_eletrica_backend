@@ -18,6 +18,7 @@
 - [Configuração local](#configuração-local)
   - [Banco de Dados](#banco-de-dados)
   - [Swagger](#swagger)
+- [Links Uteis Deploy](#links-uteis-deploy)
 
 ## Contextualização do projeto
 
@@ -62,7 +63,16 @@ basta acionar os endpoints disponibilizados.
 Para que o projeto rode localmente é necessário a realização da configuração de um banco de dados. Atenção aos seguintes pontos:
 
 * As tabelas são automaticamente criadas e populadas quando o projeto é iniciado. Basta que você possua um servidor do mysql rodando localmente.
-* Configurações banco de dados: devem ser atualizadas [nesse arquivo](src/main/resources/application.properties)
+* Configurações banco de dados: podem ser atualizadas [nesse arquivo](src/main/resources/application.properties)
 
 ### Swagger
 Quando rodado localmente, fica disponível o [swagger](http://localhost:8080/swagger-ui.html) dessa aplicação para acesso aos endpoints fornecidos.
+
+## Links Uteis Deploy
+
+* https://hub.docker.com/r/larissagb/eletrica-back-image
+* https://sakyasumedh.medium.com/deploy-backend-application-to-aws-ecs-with-application-load-balancer-step-by-step-guide-part-1-91935ae93c51
+* https://sakyasumedh.medium.com/deploy-backend-application-to-aws-ecs-with-application-load-balancer-step-by-step-guide-part-2-e81d4daf0a55
+* https://sakyasumedh.medium.com/deploy-backend-application-to-aws-ecs-with-application-load-balancer-step-by-step-guide-part-3-b8125ca27177
+* https://sakyasumedh.medium.com/setup-application-load-balancer-and-point-to-ecs-deploy-to-aws-ecs-fargate-with-load-balancer-4b5f6785e8f
+
