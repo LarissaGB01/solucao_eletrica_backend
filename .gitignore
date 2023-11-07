@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 HELP.md
+.env
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
