@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: br.com.eletrica.infra.dao.FatorTemperaturaDaoTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.03 s - in br.com.eletrica.infra.dao.FatorTemperaturaDaoTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in br.com.eletrica.infra.dao.FatorTemperaturaDaoTest

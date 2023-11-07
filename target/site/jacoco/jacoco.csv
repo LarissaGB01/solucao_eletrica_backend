@@ -29,7 +29,7 @@ solucao_eletrica_backend,br.com.eletrica.domain.useCases,CalcularDiametroCabosUs
 solucao_eletrica_backend,br.com.eletrica.domain.validacao,ValidadorEletrodutos,0,29,0,2,0,8,0,3,0,2
 solucao_eletrica_backend,br.com.eletrica.domain.validacao,Validador,0,41,0,2,0,10,0,3,0,2
 solucao_eletrica_backend,br.com.eletrica.domain.validacao,ValidadorDisjuntores,0,41,0,2,0,10,0,3,0,2
-solucao_eletrica_backend,br.com.eletrica,SolucaoEletrica,11,0,0,0,4,0,2,0,2,0
+solucao_eletrica_backend,br.com.eletrica,SolucaoEletrica,8,0,0,0,3,0,2,0,2,0
 solucao_eletrica_backend,br.com.eletrica.domain.model.api.resposta.calculo,CalculoDiametroMinimoCabo,0,134,0,0,0,19,0,35,0,35
 solucao_eletrica_backend,br.com.eletrica.domain.model.api.resposta.calculo,CalculoSecaoCondutor,0,39,0,0,0,5,0,7,0,7
 solucao_eletrica_backend,br.com.eletrica.domain.model.api.resposta.calculo,DadosUtilizadosParaCalculo,0,39,0,0,0,5,0,7,0,7
