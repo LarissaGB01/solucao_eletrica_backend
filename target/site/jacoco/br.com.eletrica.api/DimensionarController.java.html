@@ -14,10 +14,14 @@ import br.com.eletrica.domain.useCases.CalcularDisjuntoresUseCase;
 import br.com.eletrica.domain.useCases.CalcularEletrodutosUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.logging.Logger;
 
 @RestController
@@ -27,13 +31,13 @@ public class DimensionarController {
     private final CalcularDisjuntoresUseCase useCaseDisjuntores;
     private final CalcularEletrodutosUseCase useCaseEletrodutos;
 
-<span class="fc" id="L30">    private static final Logger logger = Logger.getLogger(DimensionarController.class.getName());</span>
+<span class="fc" id="L34">    private static final Logger logger = Logger.getLogger(DimensionarController.class.getName());</span>
 
-<span class="fc" id="L32">    public DimensionarController(CalcularDiametroCabosUseCase useCaseCondutores, CalcularDisjuntoresUseCase useCaseDisjuntores, CalcularEletrodutosUseCase useCaseEletrodutos) {</span>
-<span class="fc" id="L33">        this.useCaseCondutores = useCaseCondutores;</span>
-<span class="fc" id="L34">        this.useCaseDisjuntores = useCaseDisjuntores;</span>
-<span class="fc" id="L35">        this.useCaseEletrodutos = useCaseEletrodutos;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L36">    public DimensionarController(CalcularDiametroCabosUseCase useCaseCondutores, CalcularDisjuntoresUseCase useCaseDisjuntores, CalcularEletrodutosUseCase useCaseEletrodutos) {</span>
+<span class="fc" id="L37">        this.useCaseCondutores = useCaseCondutores;</span>
+<span class="fc" id="L38">        this.useCaseDisjuntores = useCaseDisjuntores;</span>
+<span class="fc" id="L39">        this.useCaseEletrodutos = useCaseEletrodutos;</span>
+<span class="fc" id="L40">    }</span>
 
     @RequestMapping(value = &quot;/dimensionar&quot;, method =  RequestMethod.POST, produces=&quot;application/json&quot;, consumes=&quot;application/json&quot;)
     @ApiOperation(value = &quot;Dimensionar condutores, eletrodutos e disjuntores&quot;)
@@ -44,27 +48,31 @@ public class DimensionarController {
             @ApiResponse(code = 500, message = &quot;Erro no sistema&quot;),
     })
     DadosResposta dimensionar(@RequestBody DadosEntrada requisicao) {
-<span class="fc" id="L47">        logger.info(&quot;NOVA REQUISICAO POST/dimensionar-----------------------------&quot;);</span>
-<span class="fc" id="L48">        logger.info(requisicao.toString());</span>
+<span class="fc" id="L51">        var inicio = Instant.now();</span>
+<span class="fc" id="L52">        logger.info(&quot;NOVA REQUISICAO POST/dimensionar-----------------------------&quot;);</span>
+<span class="fc" id="L53">        logger.info(requisicao.toString());</span>
 
-<span class="fc" id="L50">        var resposta = new DadosResposta();</span>
+<span class="fc" id="L55">        var resposta = new DadosResposta();</span>
 
         // dimensionamento condutores
-<span class="fc" id="L53">        var dadosCondutores = useCaseCondutores.calcular(requisicao);</span>
-<span class="fc" id="L54">        resposta.getDadosDimensionados().setCabeamento(dadosCondutores.getDadosDimensionados().getCabeamento());</span>
-<span class="fc" id="L55">        resposta.getDadosUtilizadosParaCalculo().setCalculoSecaoCondutor(dadosCondutores.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor());</span>
+<span class="fc" id="L58">        var dadosCondutores = useCaseCondutores.calcular(requisicao);</span>
+<span class="fc" id="L59">        resposta.getDadosDimensionados().setCabeamento(dadosCondutores.getDadosDimensionados().getCabeamento());</span>
+<span class="fc" id="L60">        resposta.getDadosUtilizadosParaCalculo().setCalculoSecaoCondutor(dadosCondutores.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor());</span>
 
         // dimensionamento disjuntores
-<span class="fc" id="L58">        var dadosDisjuntores = useCaseDisjuntores.calcularComCondutores(requisicao);</span>
-<span class="fc" id="L59">        resposta.getDadosDimensionados().setDisjuntor(dadosDisjuntores.getDadosDimensionados().getDisjuntor());</span>
-<span class="fc" id="L60">        resposta.getDadosUtilizadosParaCalculo().setCalculoDisjuntor(dadosDisjuntores.getDadosUtilizadosParaCalculo().getCalculoDisjuntor());</span>
+<span class="fc" id="L63">        var dadosDisjuntores = useCaseDisjuntores.calcularComCondutores(requisicao);</span>
+<span class="fc" id="L64">        resposta.getDadosDimensionados().setDisjuntor(dadosDisjuntores.getDadosDimensionados().getDisjuntor());</span>
+<span class="fc" id="L65">        resposta.getDadosUtilizadosParaCalculo().setCalculoDisjuntor(dadosDisjuntores.getDadosUtilizadosParaCalculo().getCalculoDisjuntor());</span>
 
         // dimensionamento eletrodutos
-<span class="fc" id="L63">        var dadosEletrodutos = useCaseEletrodutos.calcularComCondutores(requisicao);</span>
-<span class="fc" id="L64">        resposta.getDadosDimensionados().setEletroduto(dadosEletrodutos.getDadosDimensionados().getEletroduto());</span>
-<span class="fc" id="L65">        resposta.getDadosUtilizadosParaCalculo().setCalculoEletroduto(dadosEletrodutos.getDadosUtilizadosParaCalculo().getCalculoEletroduto());</span>
+<span class="fc" id="L68">        var dadosEletrodutos = useCaseEletrodutos.calcularComCondutores(requisicao);</span>
+<span class="fc" id="L69">        resposta.getDadosDimensionados().setEletroduto(dadosEletrodutos.getDadosDimensionados().getEletroduto());</span>
+<span class="fc" id="L70">        resposta.getDadosUtilizadosParaCalculo().setCalculoEletroduto(dadosEletrodutos.getDadosUtilizadosParaCalculo().getCalculoEletroduto());</span>
 
-<span class="fc" id="L67">        return resposta;</span>
+<span class="fc" id="L72">        var duration = Duration.between(inicio, Instant.now());</span>
+<span class="fc" id="L73">        long tempoDecorrido = duration.toMillis();</span>
+<span class="fc" id="L74">        logger.info(&quot;Response: 200 SUCESSO (&quot; +  tempoDecorrido + &quot;ms)-----------------&quot;);</span>
+<span class="fc" id="L75">        return resposta;</span>
     }
 
     @RequestMapping(value = &quot;/dimensionar/condutores&quot;, method =  RequestMethod.POST, produces=&quot;application/json&quot;, consumes=&quot;application/json&quot;)
@@ -76,15 +84,19 @@ public class DimensionarController {
             @ApiResponse(code = 500, message = &quot;Erro no sistema&quot;),
     })
     DadosRespostaCondutores dimensionarCondutores(@RequestBody DadosEntrada requisicao) {
-<span class="fc" id="L79">        logger.info(&quot;NOVA REQUISICAO POST/dimensionar/condutores------------------&quot;);</span>
-<span class="fc" id="L80">        logger.info(requisicao.toString());</span>
+<span class="fc" id="L87">        var inicio = Instant.now();</span>
+<span class="fc" id="L88">        logger.info(&quot;NOVA REQUISICAO POST/dimensionar/condutores------------------&quot;);</span>
+<span class="fc" id="L89">        logger.info(requisicao.toString());</span>
 
-<span class="fc" id="L82">        var resposta = new DadosRespostaCondutores();</span>
-<span class="fc" id="L83">        var dadosCondutores = useCaseCondutores.calcular(requisicao);</span>
-<span class="fc" id="L84">        resposta.setCabeamento(dadosCondutores.getDadosDimensionados().getCabeamento());</span>
-<span class="fc" id="L85">        resposta.setDadosUtilizadosParaCalculo(dadosCondutores.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor());</span>
+<span class="fc" id="L91">        var resposta = new DadosRespostaCondutores();</span>
+<span class="fc" id="L92">        var dadosCondutores = useCaseCondutores.calcular(requisicao);</span>
+<span class="fc" id="L93">        resposta.setCabeamento(dadosCondutores.getDadosDimensionados().getCabeamento());</span>
+<span class="fc" id="L94">        resposta.setDadosUtilizadosParaCalculo(dadosCondutores.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor());</span>
 
-<span class="fc" id="L87">        return resposta;</span>
+<span class="fc" id="L96">        var duration = Duration.between(inicio, Instant.now());</span>
+<span class="fc" id="L97">        long tempoDecorrido = duration.toMillis();</span>
+<span class="fc" id="L98">        logger.info(&quot;Response: 200 SUCESSO (&quot; +  tempoDecorrido + &quot;ms)-----------------&quot;);</span>
+<span class="fc" id="L99">        return resposta;</span>
     }
 
     @RequestMapping(value = &quot;/dimensionar/disjuntores&quot;, method =  RequestMethod.POST, produces=&quot;application/json&quot;, consumes=&quot;application/json&quot;)
@@ -96,15 +108,19 @@ public class DimensionarController {
             @ApiResponse(code = 500, message = &quot;Erro no sistema&quot;),
     })
     DadosRespostaDisjuntores dimensionarDisjuntores(@RequestBody DadosEntradaDisjuntores requisicao) {
-<span class="fc" id="L99">        logger.info(&quot;NOVA REQUISICAO POST/dimensionar/disjuntores-----------------&quot;);</span>
-<span class="fc" id="L100">        logger.info(requisicao.toString());</span>
+<span class="fc" id="L111">        var inicio = Instant.now();</span>
+<span class="fc" id="L112">        logger.info(&quot;NOVA REQUISICAO POST/dimensionar/disjuntores-----------------&quot;);</span>
+<span class="fc" id="L113">        logger.info(requisicao.toString());</span>
 
-<span class="fc" id="L102">        var resposta = new DadosRespostaDisjuntores();</span>
-<span class="fc" id="L103">        var dadosDisjuntores = useCaseDisjuntores.calcularSemCondutores(requisicao);</span>
-<span class="fc" id="L104">        resposta.setDisjuntor(dadosDisjuntores.getDadosDimensionados().getDisjuntor());</span>
-<span class="fc" id="L105">        resposta.setDadosUtilizadosParaCalculo(dadosDisjuntores.getDadosUtilizadosParaCalculo().getCalculoDisjuntor());</span>
+<span class="fc" id="L115">        var resposta = new DadosRespostaDisjuntores();</span>
+<span class="fc" id="L116">        var dadosDisjuntores = useCaseDisjuntores.calcularSemCondutores(requisicao);</span>
+<span class="fc" id="L117">        resposta.setDisjuntor(dadosDisjuntores.getDadosDimensionados().getDisjuntor());</span>
+<span class="fc" id="L118">        resposta.setDadosUtilizadosParaCalculo(dadosDisjuntores.getDadosUtilizadosParaCalculo().getCalculoDisjuntor());</span>
 
-<span class="fc" id="L107">        return resposta;</span>
+<span class="fc" id="L120">        var duration = Duration.between(inicio, Instant.now());</span>
+<span class="fc" id="L121">        long tempoDecorrido = duration.toMillis();</span>
+<span class="fc" id="L122">        logger.info(&quot;Response: 200 SUCESSO (&quot; +  tempoDecorrido + &quot;ms)-----------------&quot;);</span>
+<span class="fc" id="L123">        return resposta;</span>
     }
 
     @RequestMapping(value = &quot;/dimensionar/eletrodutos&quot;, method =  RequestMethod.POST, produces=&quot;application/json&quot;, consumes=&quot;application/json&quot;)
@@ -116,26 +132,30 @@ public class DimensionarController {
             @ApiResponse(code = 500, message = &quot;Erro no sistema&quot;),
     })
     DadosRespostaEletroduto dimensionarEletrodutos(@RequestBody DadosEntradaEletrodutos requisicao) {
-<span class="fc" id="L119">        logger.info(&quot;NOVA REQUISICAO POST/dimensionar/eletrodutos-----------------&quot;);</span>
-<span class="fc" id="L120">        logger.info(requisicao.toString());</span>
+<span class="fc" id="L135">        var inicio = Instant.now();</span>
+<span class="fc" id="L136">        logger.info(&quot;NOVA REQUISICAO POST/dimensionar/eletrodutos-----------------&quot;);</span>
+<span class="fc" id="L137">        logger.info(requisicao.toString());</span>
 
-<span class="fc" id="L122">        var resposta = new DadosRespostaEletroduto();</span>
-<span class="fc" id="L123">        var dadosEletrodutos = useCaseEletrodutos.calcularSemCondutores(requisicao);</span>
-<span class="fc" id="L124">        resposta.setEletroduto(dadosEletrodutos.getDadosDimensionados().getEletroduto());</span>
-<span class="fc" id="L125">        resposta.setDadosUtilizadosParaCalculo(dadosEletrodutos.getDadosUtilizadosParaCalculo().getCalculoEletroduto());</span>
+<span class="fc" id="L139">        var resposta = new DadosRespostaEletroduto();</span>
+<span class="fc" id="L140">        var dadosEletrodutos = useCaseEletrodutos.calcularSemCondutores(requisicao);</span>
+<span class="fc" id="L141">        resposta.setEletroduto(dadosEletrodutos.getDadosDimensionados().getEletroduto());</span>
+<span class="fc" id="L142">        resposta.setDadosUtilizadosParaCalculo(dadosEletrodutos.getDadosUtilizadosParaCalculo().getCalculoEletroduto());</span>
 
-<span class="fc" id="L127">        return resposta;</span>
+<span class="fc" id="L144">        var duration = Duration.between(inicio, Instant.now());</span>
+<span class="fc" id="L145">        long tempoDecorrido = duration.toMillis();</span>
+<span class="fc" id="L146">        logger.info(&quot;Response: 200 SUCESSO (&quot; +  tempoDecorrido + &quot;ms)-----------------&quot;);</span>
+<span class="fc" id="L147">        return resposta;</span>
     }
 
     @ExceptionHandler(ValidacaoException.class)
     public ResponseEntity&lt;ErroResponse&gt; formatarExcecao(ValidacaoException ex) throws JsonProcessingException {
-<span class="fc" id="L132">        ErroResponse erroResponse = new ErroResponse(</span>
-<span class="fc" id="L133">                ex.getErro().getCodigo(),</span>
-<span class="fc" id="L134">                ex.getErro().getMensagem(),</span>
-<span class="fc" id="L135">                ex.getMotivo());</span>
-<span class="fc" id="L136">        ObjectMapper objectMapper = new ObjectMapper();</span>
-<span class="fc" id="L137">        logger.severe(objectMapper.writeValueAsString(erroResponse));</span>
-<span class="fc" id="L138">        return ResponseEntity.status(ex.getErro().getHttpStatus()).body(erroResponse);</span>
+<span class="fc" id="L152">        ErroResponse erroResponse = new ErroResponse(</span>
+<span class="fc" id="L153">                ex.getErro().getCodigo(),</span>
+<span class="fc" id="L154">                ex.getErro().getMensagem(),</span>
+<span class="fc" id="L155">                ex.getMotivo());</span>
+<span class="fc" id="L156">        ObjectMapper objectMapper = new ObjectMapper();</span>
+<span class="fc" id="L157">        logger.severe(objectMapper.writeValueAsString(erroResponse));</span>
+<span class="fc" id="L158">        return ResponseEntity.status(ex.getErro().getHttpStatus()).body(erroResponse);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

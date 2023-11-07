@@ -14,10 +14,14 @@ import br.com.eletrica.domain.useCases.CalcularDisjuntoresUseCase;
 import br.com.eletrica.domain.useCases.CalcularEletrodutosUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.logging.Logger;
 
 @RestController
@@ -44,6 +48,7 @@ public class DimensionarController {
             @ApiResponse(code = 500, message = "Erro no sistema"),
     })
     DadosResposta dimensionar(@RequestBody DadosEntrada requisicao) {
+        var inicio = Instant.now();
         logger.info("NOVA REQUISICAO POST/dimensionar-----------------------------");
         logger.info(requisicao.toString());
 
@@ -64,6 +69,9 @@ public class DimensionarController {
         resposta.getDadosDimensionados().setEletroduto(dadosEletrodutos.getDadosDimensionados().getEletroduto());
         resposta.getDadosUtilizadosParaCalculo().setCalculoEletroduto(dadosEletrodutos.getDadosUtilizadosParaCalculo().getCalculoEletroduto());
 
+        var duration = Duration.between(inicio, Instant.now());
+        long tempoDecorrido = duration.toMillis();
+        logger.info("Response: 200 SUCESSO (" +  tempoDecorrido + "ms)-----------------");
         return resposta;
     }
 
@@ -76,6 +84,7 @@ public class DimensionarController {
             @ApiResponse(code = 500, message = "Erro no sistema"),
     })
     DadosRespostaCondutores dimensionarCondutores(@RequestBody DadosEntrada requisicao) {
+        var inicio = Instant.now();
         logger.info("NOVA REQUISICAO POST/dimensionar/condutores------------------");
         logger.info(requisicao.toString());
 
@@ -84,6 +93,9 @@ public class DimensionarController {
         resposta.setCabeamento(dadosCondutores.getDadosDimensionados().getCabeamento());
         resposta.setDadosUtilizadosParaCalculo(dadosCondutores.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor());
 
+        var duration = Duration.between(inicio, Instant.now());
+        long tempoDecorrido = duration.toMillis();
+        logger.info("Response: 200 SUCESSO (" +  tempoDecorrido + "ms)-----------------");
         return resposta;
     }
 
@@ -96,6 +108,7 @@ public class DimensionarController {
             @ApiResponse(code = 500, message = "Erro no sistema"),
     })
     DadosRespostaDisjuntores dimensionarDisjuntores(@RequestBody DadosEntradaDisjuntores requisicao) {
+        var inicio = Instant.now();
         logger.info("NOVA REQUISICAO POST/dimensionar/disjuntores-----------------");
         logger.info(requisicao.toString());
 
@@ -104,6 +117,9 @@ public class DimensionarController {
         resposta.setDisjuntor(dadosDisjuntores.getDadosDimensionados().getDisjuntor());
         resposta.setDadosUtilizadosParaCalculo(dadosDisjuntores.getDadosUtilizadosParaCalculo().getCalculoDisjuntor());
 
+        var duration = Duration.between(inicio, Instant.now());
+        long tempoDecorrido = duration.toMillis();
+        logger.info("Response: 200 SUCESSO (" +  tempoDecorrido + "ms)-----------------");
         return resposta;
     }
 
@@ -116,6 +132,7 @@ public class DimensionarController {
             @ApiResponse(code = 500, message = "Erro no sistema"),
     })
     DadosRespostaEletroduto dimensionarEletrodutos(@RequestBody DadosEntradaEletrodutos requisicao) {
+        var inicio = Instant.now();
         logger.info("NOVA REQUISICAO POST/dimensionar/eletrodutos-----------------");
         logger.info(requisicao.toString());
 
@@ -124,6 +141,9 @@ public class DimensionarController {
         resposta.setEletroduto(dadosEletrodutos.getDadosDimensionados().getEletroduto());
         resposta.setDadosUtilizadosParaCalculo(dadosEletrodutos.getDadosUtilizadosParaCalculo().getCalculoEletroduto());
 
+        var duration = Duration.between(inicio, Instant.now());
+        long tempoDecorrido = duration.toMillis();
+        logger.info("Response: 200 SUCESSO (" +  tempoDecorrido + "ms)-----------------");
         return resposta;
     }
 

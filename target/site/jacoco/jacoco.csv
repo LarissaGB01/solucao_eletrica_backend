@@ -8,7 +8,7 @@ solucao_eletrica_backend,br.com.eletrica.domain.model.infra,DadosBuscaExemploCon
 solucao_eletrica_backend,br.com.eletrica.domain.model.infra,DadosExemploEletroduto,0,31,0,0,0,6,0,9,0,9
 solucao_eletrica_backend,br.com.eletrica.domain.model.infra,DadosBuscaFatorTemperatura,0,29,0,0,0,7,0,5,0,5
 solucao_eletrica_backend,br.com.eletrica.domain.model.infra,DadosExemploDisjuntor,0,17,0,0,0,4,0,5,0,5
-solucao_eletrica_backend,br.com.eletrica.api,DimensionarController,0,193,0,0,0,47,0,7,0,7
+solucao_eletrica_backend,br.com.eletrica.api,DimensionarController,0,245,0,0,0,63,0,7,0,7
 solucao_eletrica_backend,br.com.eletrica.domain.model,DadosCircuito,0,106,0,0,0,15,0,27,0,27
 solucao_eletrica_backend,br.com.eletrica.infra.dao,ExemplosEletrodutosDao,0,78,0,2,0,21,0,3,0,2
 solucao_eletrica_backend,br.com.eletrica.infra.dao,ConducaoCabosDao,0,116,0,2,0,28,0,3,0,2
