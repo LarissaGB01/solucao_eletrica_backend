@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CalcularCorrenteService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.domain.services</a> &gt; <span class="el_source">CalcularCorrenteService.java</span></div><h1>CalcularCorrenteService.java</h1><pre class="source lang-java linenums">package br.com.eletrica.domain.services;
+
+import br.com.eletrica.common.constantes.FASES_VOLTAGEM;
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
+import br.com.eletrica.domain.model.api.resposta.calculo.CalculoCorrenteProjeto;
+import br.com.eletrica.domain.model.DadosCircuito;
+import br.com.eletrica.domain.model.infra.DadosBuscaFatorTemperatura;
+import br.com.eletrica.infra.repositorio.RepositorioNBR;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+@Service
+public class CalcularCorrenteService {
+
+    private final RepositorioNBR repositorioNBR;
+
+    @Autowired
+<span class="fc" id="L22">    public CalcularCorrenteService(RepositorioNBR repositorioNBR) {</span>
+<span class="fc" id="L23">        this.repositorioNBR = repositorioNBR;</span>
+<span class="fc" id="L24">    }</span>
+
+    public CalculoCorrenteProjeto calcularCorrenteProjeto(DadosCircuito circuito) {
+<span class="fc" id="L27">        var dadosDeCalculo = new CalculoCorrenteProjeto();</span>
+<span class="fc" id="L28">        dadosDeCalculo.setVoltagem(circuito.getVoltagem());</span>
+<span class="fc" id="L29">        dadosDeCalculo.setPotenciaAparente(circuito.getPotenciaAparente());</span>
+<span class="fc" id="L30">        dadosDeCalculo.setQuantidadeCircuitosAgrupados(circuito.getQuantidadeCircuitosAgrupados());</span>
+<span class="fc" id="L31">        dadosDeCalculo.setTemperaturaAmbiente(circuito.getTemperaturaAmbiente());</span>
+<span class="fc" id="L32">        dadosDeCalculo.setIsolacaoCabo(circuito.getTipoCabo().getIsolamento());</span>
+
+        // Calcular corrente do circuito
+<span class="fc" id="L35">        var divisorCorrenteCircuito = BigDecimal.valueOf(circuito.getVoltagem());</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (circuito.getFasesVoltagem().equals(FASES_VOLTAGEM.TRIFASICO)) {</span>
+<span class="fc" id="L37">            dadosDeCalculo.setIndicadorCircuitoTrifasico(true);</span>
+<span class="fc" id="L38">            divisorCorrenteCircuito = BigDecimal.valueOf(Math.sqrt(3) * circuito.getVoltagem());</span>
+        } else {
+<span class="fc" id="L40">            dadosDeCalculo.setIndicadorCircuitoTrifasico(false);</span>
+        }
+
+<span class="fc" id="L43">        var correnteCircuito = circuito.getPotenciaAparente().divide(divisorCorrenteCircuito, RoundingMode.HALF_EVEN);</span>
+<span class="fc" id="L44">        dadosDeCalculo.setCorrenteCircuito(correnteCircuito);</span>
+
+        // Calcular fator de agrupamento
+<span class="fc" id="L47">        var fatorAgrupamento = 1 / Math.sqrt(circuito.getQuantidadeCircuitosAgrupados());</span>
+<span class="fc" id="L48">        dadosDeCalculo.setFatorAgrupamento(fatorAgrupamento);</span>
+
+        // Buscar fator de temperatura
+<span class="fc" id="L51">        var fatorTemperatura = repositorioNBR.buscarFatorTemperatura(new DadosBuscaFatorTemperatura(circuito));</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (fatorTemperatura == null) {</span>
+<span class="fc" id="L53">            throw new ValidacaoException(&quot;Tente informar outros dados para o tipo do cabo e temperatura ambiente.&quot;,</span>
+                    ErrosSistema.REGISTRO_TEMPERATURA_NAO_ENCONTRADO);
+        }
+<span class="fc" id="L56">        dadosDeCalculo.setFatorTemperatura(fatorTemperatura);</span>
+
+        // Calcular corrente de projeto
+<span class="fc" id="L59">        BigDecimal divisorCorrenteProjeto = fatorTemperatura.multiply(BigDecimal.valueOf(fatorAgrupamento));</span>
+<span class="fc" id="L60">        dadosDeCalculo.setCorrenteProjeto(correnteCircuito.divide(divisorCorrenteProjeto, RoundingMode.DOWN));</span>
+
+<span class="fc" id="L62">        return dadosDeCalculo;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

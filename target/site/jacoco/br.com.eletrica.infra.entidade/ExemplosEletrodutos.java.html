@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExemplosEletrodutos.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.infra.entidade</a> &gt; <span class="el_source">ExemplosEletrodutos.java</span></div><h1>ExemplosEletrodutos.java</h1><pre class="source lang-java linenums">package br.com.eletrica.infra.entidade;
+
+import lombok.Getter;
+import lombok.Setter;
+import java.math.BigDecimal;
+
+@Getter
+<span class="fc" id="L8">@Setter</span>
+<span class="fc" id="L9">public class ExemplosEletrodutos {</span>
+<span class="fc" id="L10">    private String diametroNominalPolegadas;</span>
+<span class="fc" id="L11">    private int diametroNominalMilimetros;</span>
+<span class="fc" id="L12">    private BigDecimal diametroExterno;</span>
+<span class="fc" id="L13">    private BigDecimal diametroInterno;</span>
+
+    public static String getNomeTabela() {
+<span class="fc" id="L16">        return &quot;exemplos_eletrodutos&quot;;</span>
+    }
+
+    public static String getNomeColunaDiametroNominalPolegadas() {
+<span class="fc" id="L20">        return &quot;diametro_nominal_polegadas&quot;;</span>
+    }
+
+    public static String getNomeColunaDiametroNominalMilimetros() {
+<span class="fc" id="L24">        return &quot;diametro_nominal_milimetros&quot;;</span>
+    }
+
+    public static String getNomeColunaDiametroExterno() {
+<span class="fc" id="L28">        return &quot;diametro_externo&quot;;</span>
+    }
+
+    public static String getNomeColunaDiametroInterno() {
+<span class="fc" id="L32">        return &quot;diametro_interno&quot;;</span>
+    }
+
+    public static String queryConsultar() {
+<span class="fc" id="L36">        return &quot;SELECT &quot; +</span>
+                &quot;   diametro_interno, &quot; +
+                &quot;   diametro_externo, &quot; +
+                &quot;   diametro_nominal_milimetros,&quot; +
+                &quot;   diametro_nominal_polegadas &quot; +
+                &quot;FROM &quot; +
+                &quot;   normativas.exemplos_eletrodutos &quot; +
+                &quot;WHERE &quot; +
+                &quot;   diametro_externo &gt; ? &quot; +
+                &quot;ORDER BY diametro_interno ASC &quot; +
+                &quot;LIMIT 1&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

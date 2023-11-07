@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DadosEntrada.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.domain.model.api.requisicao</a> &gt; <span class="el_source">DadosEntrada.java</span></div><h1>DadosEntrada.java</h1><pre class="source lang-java linenums">package br.com.eletrica.domain.model.api.requisicao;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.math.BigDecimal;
+
+@Getter
+<span class="fc" id="L12">@Setter</span>
+@Entity
+<span class="fc" id="L14">public class DadosEntrada {</span>
+
+    @Id
+    @ApiModelProperty(required = true, example = &quot;TOMADA&quot;)
+<span class="fc" id="L18">    private String utilizacaoCircuito;</span>
+
+    @ApiModelProperty(required = true, example = &quot;DISTRIBUICAO&quot;)
+<span class="fc" id="L21">    private String tipoCircuito;</span>
+
+    @ApiModelProperty(required = true, example = &quot;TRIFASICO&quot;)
+<span class="fc" id="L24">    private String fasesVoltagem;</span>
+
+    @ApiModelProperty(required = true, example = &quot;380&quot;)
+<span class="fc" id="L27">    private Integer voltagem;</span>
+
+    @ApiModelProperty(required = true, example = &quot;A1&quot;)
+<span class="fc" id="L30">    private String metodoInstalacao;</span>
+
+    @ApiModelProperty(required = true, example = &quot;ALUMINIO&quot;)
+<span class="fc" id="L33">    private String tipoCabo;</span>
+
+    @ApiModelProperty(required = false, example = &quot;12000&quot;)
+<span class="fc" id="L36">    private BigDecimal potenciaAtiva;</span>
+
+    @ApiModelProperty(required = false, example = &quot;0&quot;)
+<span class="fc" id="L39">    private BigDecimal potenciaAparente;</span>
+
+    @ApiModelProperty(required = false, example = &quot;0.8&quot;)
+<span class="fc" id="L42">    private BigDecimal fatorDePotencia;</span>
+
+    @ApiModelProperty(required = true, example = &quot;50&quot;)
+<span class="fc" id="L45">    private Integer temperaturaAmbiente;</span>
+
+    @ApiModelProperty(required = true, example = &quot;2&quot;)
+<span class="fc" id="L48">    private Integer quantidadeCircuitosAgrupados;</span>
+
+    @ApiModelProperty(required = true, example = &quot;60&quot;)
+<span class="fc" id="L51">    private Integer comprimentoFio;</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L55">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L56">        var stringObjetoNulo = &quot;null&quot;;</span>
+
+<span class="fc" id="L58">        sb.append(&quot;Circuito de &quot;);</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        sb.append(tipoCircuito != null ? tipoCircuito.toLowerCase() : stringObjetoNulo);</span>
+<span class="fc" id="L60">        sb.append(&quot; utilizado para &quot;);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        sb.append(utilizacaoCircuito != null ? utilizacaoCircuito.toLowerCase() : stringObjetoNulo);</span>
+<span class="fc" id="L62">        sb.append(&quot;. Opera em um sistema &quot;);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        sb.append(fasesVoltagem != null ? fasesVoltagem.toLowerCase() : stringObjetoNulo);</span>
+<span class="fc" id="L64">        sb.append(&quot; de &quot;);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        sb.append(voltagem != null ? voltagem + &quot;V&quot; : stringObjetoNulo);</span>
+<span class="fc" id="L66">        sb.append(&quot;, &quot;);</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        sb.append(potenciaAparente != null ? potenciaAparente + &quot;VA&quot; : stringObjetoNulo);</span>
+<span class="fc" id="L68">        sb.append(&quot; e &quot;);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        sb.append(potenciaAtiva != null ? potenciaAtiva + &quot;W&quot; : stringObjetoNulo);</span>
+<span class="fc" id="L70">        sb.append(&quot; com fator de potência &quot;);</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        sb.append(fatorDePotencia != null ? fatorDePotencia.toString() : stringObjetoNulo);</span>
+<span class="fc" id="L72">        sb.append(&quot;. A instalação seguirá o método &quot;);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        sb.append(metodoInstalacao != null ? metodoInstalacao : stringObjetoNulo);</span>
+<span class="fc" id="L74">        sb.append(&quot; com cabos de &quot;);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        sb.append(tipoCabo != null ? tipoCabo : stringObjetoNulo);</span>
+<span class="fc" id="L76">        sb.append(&quot; em uma temperatura ambiente de &quot;);</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        sb.append(temperaturaAmbiente != null ? temperaturaAmbiente + &quot; graus Celsius&quot; : stringObjetoNulo);</span>
+<span class="fc" id="L78">        sb.append(&quot;. Os circuitos terão &quot;);</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        sb.append(quantidadeCircuitosAgrupados != null ? quantidadeCircuitosAgrupados : stringObjetoNulo);</span>
+<span class="fc" id="L80">        sb.append(&quot; cabos e o comprimento total dos mesmos será de &quot;);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        sb.append(comprimentoFio != null ? comprimentoFio + &quot; metros&quot; : stringObjetoNulo);</span>
+<span class="fc" id="L82">        sb.append(&quot;.&quot;);</span>
+
+<span class="fc" id="L84">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

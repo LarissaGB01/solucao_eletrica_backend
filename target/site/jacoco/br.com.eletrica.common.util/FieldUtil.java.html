@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FieldUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.common.util</a> &gt; <span class="el_source">FieldUtil.java</span></div><h1>FieldUtil.java</h1><pre class="source lang-java linenums">package br.com.eletrica.common.util;
+
+import java.math.BigDecimal;
+import java.util.EnumSet;
+
+<span class="fc" id="L6">public class FieldUtil {</span>
+    public static &lt;E extends Enum&lt;E&gt;&gt; String listarEnums(Class&lt;E&gt; enumClass) {
+<span class="fc" id="L8">        var sb = new StringBuilder();</span>
+
+<span class="fc bfc" id="L10" title="All 2 branches covered.">        for (E enumValue : enumClass.getEnumConstants()) {</span>
+<span class="fc" id="L11">            sb.append(enumValue.toString());</span>
+<span class="fc" id="L12">            sb.append(&quot;, &quot;);</span>
+        }
+
+<span class="fc" id="L15">        var resposta = sb.toString();</span>
+<span class="fc" id="L16">        return resposta.substring(0, resposta.length() - 2);</span>
+    }
+
+    public static &lt;E extends Enum&lt;E&gt;&gt; boolean enumNaoContem(Class&lt;E&gt; enumClass, String value) {
+<span class="fc" id="L20">        EnumSet&lt;E&gt; enumSet = EnumSet.allOf(enumClass);</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        for (E enumValue : enumSet) {</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">            if (enumValue.name().equals(value)) {</span>
+<span class="fc" id="L23">                return false;</span>
+            }
+<span class="fc" id="L25">        }</span>
+<span class="fc" id="L26">        return true;</span>
+    }
+
+    public static boolean campoPreenchido(Object campo) {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (campo == null) {</span>
+<span class="fc" id="L31">            return false;</span>
+        }
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (campo instanceof String) {</span>
+<span class="fc" id="L35">            String texto = (String) campo;</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            return !texto.trim().isEmpty();</span>
+        }
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (campo instanceof Number) {</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            if (campo instanceof Integer) {</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">                return ((Integer) campo) != 0;</span>
+            }
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            if (campo instanceof BigDecimal) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                return ((BigDecimal) campo).compareTo(BigDecimal.ZERO) != 0;</span>
+            }
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">            if (campo instanceof Float) {</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                return ((Float) campo) != 0;</span>
+            }
+        }
+
+<span class="fc" id="L51">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

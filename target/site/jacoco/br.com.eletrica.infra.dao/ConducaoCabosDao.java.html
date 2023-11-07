@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConducaoCabosDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.infra.dao</a> &gt; <span class="el_source">ConducaoCabosDao.java</span></div><h1>ConducaoCabosDao.java</h1><pre class="source lang-java linenums">package br.com.eletrica.infra.dao;
+
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
+import br.com.eletrica.common.util.ConnectionUtil;
+import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
+import br.com.eletrica.infra.entidade.ConducaoCabos;
+import br.com.eletrica.infra.mapper.ConducaoCabosMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+@Component
+public class ConducaoCabosDao {
+
+    private final ConnectionUtil connectionUtil;
+    private final ConducaoCabosMapper mapper;
+
+    @Autowired
+<span class="fc" id="L24">    public ConducaoCabosDao(ConnectionUtil connectionUtil, ConducaoCabosMapper mapper) {</span>
+<span class="fc" id="L25">        this.connectionUtil = connectionUtil;</span>
+<span class="fc" id="L26">        this.mapper = mapper;</span>
+<span class="fc" id="L27">    }</span>
+
+    public DadosConducaoCabos buscarSecaoMinimaCabo(DadosConducaoCabos dados) throws ValidacaoException {
+<span class="fc" id="L30">        Connection connection = null;</span>
+        PreparedStatement statement;
+        ResultSet resultSet;
+
+        try {
+<span class="fc" id="L35">            connection = connectionUtil.getConnection();</span>
+
+            // Alimenta parametros de consulta
+<span class="fc" id="L38">            statement = connection.prepareStatement(ConducaoCabos.queryConsultar());</span>
+<span class="fc" id="L39">            statement.setString(1, dados.getInstalacao());</span>
+<span class="fc" id="L40">            statement.setInt(2, dados.getCondutoresCarregados());</span>
+<span class="fc" id="L41">            statement.setString(3, dados.getMaterial());</span>
+<span class="fc" id="L42">            statement.setBigDecimal(4, dados.getCorrenteNominal());</span>
+<span class="fc" id="L43">            statement.setString(5, dados.getIsolamento());</span>
+<span class="fc" id="L44">            statement.setBigDecimal(6, dados.getSecaoNominal());</span>
+
+            // Executa a consulta
+<span class="fc" id="L47">            resultSet = statement.executeQuery();</span>
+
+            // Processa o resultado
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            if (resultSet.next()) {</span>
+<span class="fc" id="L51">                ConducaoCabos conducaoCabos = new ConducaoCabos();</span>
+<span class="fc" id="L52">                conducaoCabos.setMaterial(resultSet.getString(ConducaoCabos.getNomeColunaMaterial()));</span>
+<span class="fc" id="L53">                conducaoCabos.setSecaoNominal(resultSet.getBigDecimal(ConducaoCabos.getNomeColunaSecaoNominal()));</span>
+<span class="fc" id="L54">                conducaoCabos.setInstalacao(resultSet.getString(ConducaoCabos.getNomeColunaInstalacao()));</span>
+<span class="fc" id="L55">                conducaoCabos.setCondutoresCarregados(resultSet.getInt(ConducaoCabos.getNomeColunaCondutoresCarregados()));</span>
+<span class="fc" id="L56">                conducaoCabos.setCorrenteNominal(resultSet.getBigDecimal(ConducaoCabos.getNomeColunaCorrenteNominal()));</span>
+<span class="fc" id="L57">                conducaoCabos.setIsolamento(resultSet.getString(ConducaoCabos.getNomeColunaIsolacao()));</span>
+<span class="fc" id="L58">                return mapper.toDomain(conducaoCabos);</span>
+            } else {
+<span class="fc" id="L60">                return null;</span>
+            }
+<span class="fc" id="L62">        } catch (SQLException e) {</span>
+<span class="fc" id="L63">            throw new ValidacaoException(&quot;Erro ao acessar a tabela &quot; + ConducaoCabos.getNomeTabela() + &quot;.&quot; +</span>
+<span class="fc" id="L64">                    &quot;Codigo SQL &quot; + e.getErrorCode(), ErrosSistema.ACESSO_BANCO_DADOS);</span>
+        } finally {
+<span class="fc" id="L66">            connectionUtil.closeConnection(connection);</span>
+        }
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

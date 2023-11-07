@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExemplosDisjuntores.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.infra.entidade</a> &gt; <span class="el_source">ExemplosDisjuntores.java</span></div><h1>ExemplosDisjuntores.java</h1><pre class="source lang-java linenums">package br.com.eletrica.infra.entidade;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+@Getter
+<span class="fc" id="L12">@Setter</span>
+<span class="fc" id="L13">public class ExemplosDisjuntores {</span>
+<span class="fc" id="L14">    private int correnteNominal;</span>
+<span class="fc" id="L15">    private int condutoresCarregados;</span>
+<span class="fc" id="L16">    private String nomeDisjuntor;</span>
+
+    public static String getNomeTabela() {
+<span class="fc" id="L19">        return &quot;exemplos_disjuntores&quot;;</span>
+    }
+
+    public static String getNomeColunaCorrenteNominal() {
+<span class="fc" id="L23">        return &quot;corrente_nominal&quot;;</span>
+    }
+
+    public static String getNomeColunaCondutoresCarregados() {
+<span class="fc" id="L27">        return &quot;condutores_carregados&quot;;</span>
+    }
+
+    public static String getNomeColunaNomeDisjuntor() {
+<span class="fc" id="L31">        return &quot;nome_disjuntor&quot;;</span>
+    }
+
+    public static String queryConsultar() {
+<span class="fc" id="L35">        return &quot;SELECT &quot; +</span>
+                &quot;   corrente_nominal, &quot; +
+                &quot;   condutores_carregados, &quot; +
+                &quot;   nome_disjuntor &quot; +
+                &quot;FROM &quot; +
+                &quot;   normativas.exemplos_disjuntores &quot; +
+                &quot;WHERE &quot; +
+                &quot;   corrente_nominal &gt; ? AND &quot; +
+                &quot;   corrente_nominal &lt; ? AND &quot; +
+                &quot;   condutores_carregados = ? &quot; +
+                &quot;ORDER BY corrente_nominal ASC &quot; +
+                &quot;LIMIT 1&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

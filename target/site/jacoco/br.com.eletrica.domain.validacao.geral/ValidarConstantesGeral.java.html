@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidarConstantesGeral.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.domain.validacao.geral</a> &gt; <span class="el_source">ValidarConstantesGeral.java</span></div><h1>ValidarConstantesGeral.java</h1><pre class="source lang-java linenums">package br.com.eletrica.domain.validacao.geral;
+
+import br.com.eletrica.common.constantes.*;
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
+import br.com.eletrica.common.util.FieldUtil;
+import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
+import br.com.eletrica.domain.validacao.Validador;
+
+<span class="fc" id="L10">public class ValidarConstantesGeral implements Validador {</span>
+
+    @Override
+    public void validar(DadosEntrada entrada) throws ValidacaoException {
+
+        // valida utilizacao do circuito
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        if (entrada.getUtilizacaoCircuito() == null ||</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">                FieldUtil.enumNaoContem(TIPO_UTILIZACAO.class, entrada.getUtilizacaoCircuito())) {</span>
+<span class="fc" id="L18">            throw new ValidacaoException(&quot;Utilizacao do circuito informada: &quot; + entrada.getUtilizacaoCircuito() + &quot;. &quot; +</span>
+<span class="fc" id="L19">                    &quot;Valores aceitos: &quot; + FieldUtil.listarEnums(TIPO_UTILIZACAO.class) + &quot;.&quot;,</span>
+                    ErrosSistema.FINALIDADE_CIRCUITO_INVALIDA);
+        }
+
+        // valida fases voltagem
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (entrada.getFasesVoltagem() == null ||</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">                FieldUtil.enumNaoContem(FASES_VOLTAGEM.class, entrada.getFasesVoltagem())) {</span>
+<span class="fc" id="L26">            throw new ValidacaoException(&quot;Fases de voltagem informada: &quot; + entrada.getFasesVoltagem() + &quot;. &quot; +</span>
+<span class="fc" id="L27">                    &quot;Valores aceitos: &quot; + FieldUtil.listarEnums(FASES_VOLTAGEM.class) + &quot;.&quot;,</span>
+                    ErrosSistema.FASES_SISTEMA_INVALIDA);
+        }
+
+        // valida metodo de instalacao
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (entrada.getMetodoInstalacao() == null ||</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">                FieldUtil.enumNaoContem(METODO_INSTALACAO.class, entrada.getMetodoInstalacao())) {</span>
+<span class="fc" id="L34">            throw new ValidacaoException(&quot;Metodo de instalacao informado: &quot; + entrada.getMetodoInstalacao() + &quot;. &quot; +</span>
+<span class="fc" id="L35">                    &quot;Valores aceitos: &quot; + FieldUtil.listarEnums(METODO_INSTALACAO.class) + &quot;.&quot;,</span>
+                    ErrosSistema.TIPO_DE_INSTALACAO_INVALIDA);
+        }
+
+        // valida tipo do cabo
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (entrada.getTipoCabo() == null ||</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">                FieldUtil.enumNaoContem(TIPO_CABO.class, entrada.getTipoCabo())) {</span>
+<span class="fc" id="L42">            throw new ValidacaoException(&quot;Tipo de cabo informado: &quot; + entrada.getTipoCabo() + &quot;. &quot; +</span>
+<span class="fc" id="L43">                    &quot;Valores aceitos: &quot; + FieldUtil.listarEnums(TIPO_CABO.class) + &quot;.&quot;,</span>
+                    ErrosSistema.MATERIAL_DO_CABO_INVALIDO);
+        }
+
+        // valida tipo de circuito
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (entrada.getTipoCircuito() == null ||</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">                FieldUtil.enumNaoContem(TIPO_CIRCUITO.class, entrada.getTipoCircuito())) {</span>
+<span class="fc" id="L50">            throw new ValidacaoException(&quot;Tipo de circuito informado: &quot; + entrada.getTipoCircuito() + &quot;. &quot; +</span>
+<span class="fc" id="L51">                    &quot;Valores aceitos: &quot; + FieldUtil.listarEnums(TIPO_CIRCUITO.class) + &quot;.&quot;,</span>
+                    ErrosSistema.TIPO_CIRCUITO_INVALIDO);
+        }
+<span class="fc" id="L54">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

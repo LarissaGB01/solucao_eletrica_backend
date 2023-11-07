@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CalcularDiametroCabosUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.domain.useCases</a> &gt; <span class="el_source">CalcularDiametroCabosUseCase.java</span></div><h1>CalcularDiametroCabosUseCase.java</h1><pre class="source lang-java linenums">package br.com.eletrica.domain.useCases;
+
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
+import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
+import br.com.eletrica.domain.model.api.resposta.DadosResposta;
+import br.com.eletrica.domain.model.infra.DadosBuscaExemploCondutor;
+import br.com.eletrica.domain.model.infra.DadosConducaoCabos;
+import br.com.eletrica.domain.model.infra.DadosExemploCondutor;
+import br.com.eletrica.domain.model.mappers.DadosCircuitoMapper;
+import br.com.eletrica.domain.services.CalcularCorrenteService;
+import br.com.eletrica.domain.services.CalcularDiametroCaboService;
+import br.com.eletrica.domain.services.CalcularPotenciaService;
+import br.com.eletrica.domain.validacao.Validador;
+import br.com.eletrica.infra.repositorio.RepositorioNBR;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="fc" id="L20">@RequiredArgsConstructor</span>
+public class CalcularDiametroCabosUseCase {
+
+    private final DadosCircuitoMapper mapper;
+    private final RepositorioNBR repositorioNBR;
+    private final CalcularCorrenteService calcularCorrenteService;
+    private final CalcularPotenciaService calcularPotenciaService;
+    private final CalcularDiametroCaboService calcularDiametroCaboService;
+
+    public DadosResposta calcular(DadosEntrada entrada) throws ValidacaoException {
+
+        // Validação
+<span class="fc" id="L32">        Validador.validarRequisicaoCabeacao(entrada);</span>
+
+<span class="fc" id="L34">        var resposta = new DadosResposta();</span>
+<span class="fc" id="L35">        var circuito = mapper.toDomain(entrada);</span>
+
+        // Calcular potências
+<span class="fc" id="L38">        var dadosCalculoPotenciaAparente = calcularPotenciaService.calcularAparente(</span>
+<span class="fc" id="L39">                entrada.getPotenciaAtiva(),</span>
+<span class="fc" id="L40">                entrada.getPotenciaAparente(),</span>
+<span class="fc" id="L41">                entrada.getFatorDePotencia());</span>
+
+<span class="fc" id="L43">        resposta.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor().setCalculoPotenciaAparente(dadosCalculoPotenciaAparente);</span>
+<span class="fc" id="L44">        circuito.setPotenciaAparente(dadosCalculoPotenciaAparente.getPotenciaAparente());</span>
+
+        // Calcular corrente de projeto
+<span class="fc" id="L47">        var dadosCalculoCorrenteProjeto = calcularCorrenteService.calcularCorrenteProjeto(circuito);</span>
+
+<span class="fc" id="L49">        resposta.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor().setCalculoCorrenteProjeto(dadosCalculoCorrenteProjeto);</span>
+<span class="fc" id="L50">        circuito.setCorrenteProjeto(dadosCalculoCorrenteProjeto.getCorrenteProjeto());</span>
+
+        // Definir resistividade do cabo
+<span class="fc" id="L53">        var resistividade = circuito.getTipoCabo().valorResistividade();</span>
+
+        // Calcular seção do condutor
+<span class="fc" id="L56">        var calculoDiametro = calcularDiametroCaboService.calcular(resistividade, circuito);</span>
+
+<span class="fc" id="L58">        resposta.getDadosUtilizadosParaCalculo().getCalculoSecaoCondutor().setCalculoDiametroMinimoCabo(calculoDiametro);</span>
+
+        // Buscar seção do condutor
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        var diametroCabo = calculoDiametro.getIndicadorMinimoDiametroUtilizado() ?</span>
+<span class="fc" id="L62">                calculoDiametro.getMinimoDiametroCabo() :</span>
+<span class="fc" id="L63">                calculoDiametro.getDiametroCalculado();</span>
+<span class="fc" id="L64">        var dadosParaBuscaSecaoMinima = new DadosConducaoCabos(circuito, diametroCabo);</span>
+<span class="fc" id="L65">        var dadosConducaoCalculados = repositorioNBR.buscarSecaoMinimaCabo(dadosParaBuscaSecaoMinima);</span>
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (dadosConducaoCalculados == null) {</span>
+<span class="fc" id="L68">            throw new ValidacaoException(&quot;Tente informar outros dados para o sistema.&quot;,</span>
+                    ErrosSistema.REGISTRO_DIAMETRO_NAO_ENCONTRADO);
+        }
+
+<span class="fc" id="L72">        resposta.getDadosDimensionados().getCabeamento().setSecaoNominalCondutor(dadosConducaoCalculados.getSecaoNominal());</span>
+<span class="fc" id="L73">        resposta.getDadosDimensionados().getCabeamento().setCorrenteMaximaCondutor(dadosConducaoCalculados.getCorrenteNominal());</span>
+
+        // Buscar condutor recomendado
+<span class="fc" id="L76">        var dadosParaBuscaCondutor = new DadosBuscaExemploCondutor(circuito, dadosConducaoCalculados.getSecaoNominal());</span>
+<span class="fc" id="L77">        var condutorRecomendado = repositorioNBR.buscarExemploCabeamento(dadosParaBuscaCondutor);</span>
+
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (condutorRecomendado != null) {</span>
+<span class="fc" id="L80">            resposta.getDadosDimensionados().getCabeamento().setDiametroNominalCaboRecomendado(condutorRecomendado.getDiametroNominalCondutor());</span>
+<span class="fc" id="L81">            resposta.getDadosDimensionados().getCabeamento().setDiametroExternoCaboRecomendado(condutorRecomendado.getDiametroNominalExterno());</span>
+        }
+
+<span class="fc" id="L84">        return resposta;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

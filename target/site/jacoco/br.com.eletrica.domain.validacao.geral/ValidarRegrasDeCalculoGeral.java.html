@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidarRegrasDeCalculoGeral.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.domain.validacao.geral</a> &gt; <span class="el_source">ValidarRegrasDeCalculoGeral.java</span></div><h1>ValidarRegrasDeCalculoGeral.java</h1><pre class="source lang-java linenums">package br.com.eletrica.domain.validacao.geral;
+
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
+import br.com.eletrica.common.util.FieldUtil;
+import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
+import br.com.eletrica.domain.validacao.Validador;
+
+<span class="fc" id="L9">public class ValidarRegrasDeCalculoGeral implements Validador {</span>
+
+    @Override
+    public void validar(DadosEntrada entrada) {
+
+        // TENSAO_DIFERENTE_FASES_SISTEMA - Tensão escolhida não é aceita para o sistema informado.
+
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        if (FieldUtil.campoPreenchido(entrada.getPotenciaAparente())</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">                &amp;&amp; FieldUtil.campoPreenchido(entrada.getPotenciaAtiva())) {</span>
+<span class="fc" id="L18">            throw new ValidacaoException(&quot;Potencia ativa informada: &quot; + entrada.getPotenciaAtiva() +</span>
+<span class="fc" id="L19">                    &quot; // Potencia aparente informada: &quot; + entrada.getPotenciaAparente(),</span>
+                    ErrosSistema.AMBAS_POTENCIAS_PREENCHIDAS);
+        }
+
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (!FieldUtil.campoPreenchido(entrada.getPotenciaAparente())</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">                &amp;&amp; !FieldUtil.campoPreenchido(entrada.getPotenciaAtiva())) {</span>
+<span class="fc" id="L25">            throw new ValidacaoException(&quot;Potencia ativa informada: &quot; + entrada.getPotenciaAtiva() +</span>
+<span class="fc" id="L26">                    &quot; // Potencia aparente informada: &quot; + entrada.getPotenciaAparente(),</span>
+                    ErrosSistema.NENHUMA_POTENCIA_PREENCHIDA);
+        }
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (FieldUtil.campoPreenchido(entrada.getPotenciaAparente())</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">                &amp;&amp; FieldUtil.campoPreenchido(entrada.getFatorDePotencia())) {</span>
+<span class="fc" id="L32">            throw new ValidacaoException(&quot;Fator de potencia informado: &quot; + entrada.getFatorDePotencia() +</span>
+<span class="fc" id="L33">                    &quot; // Potencia aparente informada: &quot; + entrada.getPotenciaAparente(),</span>
+                    ErrosSistema.POTENCIAS_APARENTE_E_FATOR_POTENCIA_PREENCHIDOS);
+        }
+
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (FieldUtil.campoPreenchido(entrada.getPotenciaAtiva())</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">                &amp;&amp; !FieldUtil.campoPreenchido(entrada.getFatorDePotencia())) {</span>
+<span class="fc" id="L39">            throw new ValidacaoException(&quot;Fator de potencia informado: &quot; + entrada.getFatorDePotencia() +</span>
+<span class="fc" id="L40">                    &quot; // Potencia ativa informada: &quot; + entrada.getPotenciaAtiva(),</span>
+                    ErrosSistema.POTENCIA_ATIVA_PREENCHIDA_E_FATOR_POTENCIA_NAO);
+        }
+<span class="fc" id="L43">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

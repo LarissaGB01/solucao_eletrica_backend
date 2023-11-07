@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidarValoresNegativosGeral.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.domain.validacao.geral</a> &gt; <span class="el_source">ValidarValoresNegativosGeral.java</span></div><h1>ValidarValoresNegativosGeral.java</h1><pre class="source lang-java linenums">package br.com.eletrica.domain.validacao.geral;
+
+import br.com.eletrica.common.exception.ErrosSistema;
+import br.com.eletrica.common.exception.ValidacaoException;
+import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
+import br.com.eletrica.domain.validacao.Validador;
+
+import java.math.BigDecimal;
+
+<span class="fc" id="L10">public class ValidarValoresNegativosGeral implements Validador {</span>
+
+    @Override
+    public void validar(DadosEntrada entrada) {
+
+        // valida voltagem
+<span class="fc bfc" id="L16" title="All 4 branches covered.">        if (entrada.getVoltagem() == null || entrada.getVoltagem() &lt;= 0) {</span>
+<span class="fc" id="L17">            throw new ValidacaoException(&quot;Voltagem informada: &quot; + entrada.getVoltagem(),</span>
+                    ErrosSistema.TENSAO_SISTEMA_INVALIDO);
+        }
+
+        // valida potencia ativa
+<span class="pc bpc" id="L22" title="1 of 4 branches missed.">        if (entrada.getPotenciaAtiva() != null &amp;&amp; entrada.getPotenciaAtiva().compareTo(BigDecimal.ZERO) &lt; 0) {</span>
+<span class="fc" id="L23">            throw new ValidacaoException(&quot;Potencia ativa informada: &quot; + entrada.getPotenciaAtiva(),</span>
+                    ErrosSistema.POTENCIA_ATIVA_INVALIDA);
+        }
+
+        // valida potencia aparente
+<span class="pc bpc" id="L28" title="1 of 4 branches missed.">        if (entrada.getPotenciaAparente() != null &amp;&amp; entrada.getPotenciaAparente().compareTo(BigDecimal.ZERO) &lt; 0) {</span>
+<span class="fc" id="L29">            throw new ValidacaoException(&quot;Potencia aparente informada: &quot; + entrada.getPotenciaAparente(),</span>
+                    ErrosSistema.POTENCIA_APARENTE_INVALIDA);
+        }
+
+        // valida fator de potencia
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (entrada.getFatorDePotencia() != null</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                &amp;&amp; (entrada.getFatorDePotencia().compareTo(BigDecimal.ZERO) &lt; 0</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">                || entrada.getFatorDePotencia().compareTo(BigDecimal.ONE) &gt; 0)) {</span>
+<span class="fc" id="L37">            throw new ValidacaoException(&quot;Fator de potencia informado: &quot; + entrada.getFatorDePotencia(),</span>
+                    ErrosSistema.FATOR_DE_POTENCIA_INVALIDO);
+        }
+
+        // valida temperatura ambiente
+<span class="fc bfc" id="L42" title="All 4 branches covered.">        if (entrada.getTemperaturaAmbiente() == null || entrada.getTemperaturaAmbiente() &lt;= 0) {</span>
+<span class="fc" id="L43">            throw new ValidacaoException(&quot;Temperatura informada: &quot; + entrada.getTemperaturaAmbiente(),</span>
+                    ErrosSistema.TEMPERATURA_AMBIENTE_INVALIDA);
+        }
+
+        // valida quantidade de circuitos agrupados
+<span class="fc bfc" id="L48" title="All 4 branches covered.">        if (entrada.getQuantidadeCircuitosAgrupados() == null || entrada.getQuantidadeCircuitosAgrupados() &lt;= 0) {</span>
+<span class="fc" id="L49">            throw new ValidacaoException(&quot;Quantidade de circuitos informada: &quot; + entrada.getQuantidadeCircuitosAgrupados(),</span>
+                    ErrosSistema.QUANTIDADE_CIRCUITOS_AGRUPAGOS_INVALIDA);
+        }
+
+        // valida comprimento do fio
+<span class="fc bfc" id="L54" title="All 4 branches covered.">        if (entrada.getComprimentoFio() == null || entrada.getComprimentoFio() &lt;= 0) {</span>
+<span class="fc" id="L55">            throw new ValidacaoException(&quot;Comprimento informado: &quot; + entrada.getComprimentoFio(),</span>
+                    ErrosSistema.COMPRIMENTO_CABO_INVALIDO);
+        }
+
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DadosCircuitoMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">solucao_eletrica_backend</a> &gt; <a href="index.source.html" class="el_package">br.com.eletrica.domain.model.mappers</a> &gt; <span class="el_source">DadosCircuitoMapper.java</span></div><h1>DadosCircuitoMapper.java</h1><pre class="source lang-java linenums">package br.com.eletrica.domain.model.mappers;
+
+import br.com.eletrica.common.constantes.*;
+import br.com.eletrica.domain.model.api.requisicao.DadosEntrada;
+import br.com.eletrica.domain.model.DadosCircuito;
+
+<span class="fc" id="L7">public class DadosCircuitoMapper {</span>
+    public DadosCircuito toDomain(DadosEntrada entrada) {
+<span class="fc" id="L9">        var dadosCircuito = new DadosCircuito();</span>
+
+        // dados do circuito
+<span class="fc" id="L12">        dadosCircuito.setUtilizacaoCircuito(TIPO_UTILIZACAO.valueOf(entrada.getUtilizacaoCircuito()));</span>
+<span class="fc" id="L13">        dadosCircuito.setTipoCircuito(TIPO_CIRCUITO.valueOf(entrada.getTipoCircuito()));</span>
+<span class="fc" id="L14">        dadosCircuito.setMetodoInstalacao(METODO_INSTALACAO.valueOf(entrada.getMetodoInstalacao()));</span>
+<span class="fc" id="L15">        dadosCircuito.setTipoCabo(TIPO_CABO.valueOf(entrada.getTipoCabo()));</span>
+<span class="fc" id="L16">        dadosCircuito.setTemperaturaAmbiente(entrada.getTemperaturaAmbiente());</span>
+<span class="fc" id="L17">        dadosCircuito.setQuantidadeCircuitosAgrupados(entrada.getQuantidadeCircuitosAgrupados());</span>
+<span class="fc" id="L18">        dadosCircuito.setComprimentoFio(entrada.getComprimentoFio());</span>
+
+        // dados eletricos
+<span class="fc" id="L21">        dadosCircuito.setFasesVoltagem(FASES_VOLTAGEM.valueOf(entrada.getFasesVoltagem()));</span>
+<span class="fc" id="L22">        dadosCircuito.setVoltagem(entrada.getVoltagem());</span>
+<span class="fc" id="L23">        dadosCircuito.setPotenciaAtiva(entrada.getPotenciaAtiva());</span>
+<span class="fc" id="L24">        dadosCircuito.setFatorDePotencia(entrada.getFatorDePotencia());</span>
+
+<span class="fc" id="L26">        return dadosCircuito;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
